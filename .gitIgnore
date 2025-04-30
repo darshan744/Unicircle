@@ -1,0 +1,46 @@
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Dependency directories
+**/node_modules/
+
+# Runtime files
+**/pids
+**/*.pid
+**/*.seed
+
+# Optional npm cache directory
+.npm/
+
+# dotenv environment variables
+**/.env
+**/.env.*
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Angular build output
+/frontend/dist/
+/frontend/.angular/cache/
+/frontend/.angular/config.json
+
+# Backend build (if using TS or compiled files)
+**/dist/
+**/build/
+**/coverage/
+
+# Other common
+*.tgz
+*.swp
+Backend/src/generated/

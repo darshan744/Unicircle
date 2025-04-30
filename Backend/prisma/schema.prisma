@@ -13,3 +13,71 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String
+  password     String
+  posts        Post[]    @relation("UserPost")
+  likes        Post[]    @relation("LikedPosts")
+  savedPost    Post[]    @relation("Saved")
+  profileImage String
+  groups       Groups[]
+  Comments     Comment[]
+}
+// post model
+model Post {
+  id         String    @id @default(uuid())
+  User       User      @relation("UserPost", fields: [userId], references: [id])
+  tags       Tags[]
+  category   Category  @relation(fields: [categoryId], references: [id])
+  userId     String
+  categoryId String
+  images     String[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  likedBy    User[]    @relation("LikedPosts")
+  savedBy    User[]    @relation("Saved")
+  Comments   Comment[]
+}
+// tags like developement or web dev
+model Tags {
+  id      String  @id @default(uuid())
+  Posts   Post?   @relation(fields: [postsId], references: [id])
+  postsId String?
+  name    String
+}
+// category of the post
+model Category {
+  id    String @id @default(uuid())
+  name  String
+  Posts Post[]
+}
+
+// Groups similar to Reddit groups 
+model Groups {
+  
+  id   String @id @default(uuid())
+  name String
+  
+  User User[]
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  // actual comment
+  comment String
+  // post to which comment
+  post    Post   @relation(fields: [postId], references: [id])
+  // who commented
+  user    User   @relation(fields: [userId], references: [id])
+  // relation columns
+  postId  String
+  userId  String
+  // replies to comments
+  replies  Comment[] @relation("Comment Replies")
+  // If its a comment null if not set which comment is this replied to
+  parent   Comment   @relation("Comment Replies", fields: [parendId], references: [id])
+  parendId String
+}

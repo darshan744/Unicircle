@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
+    "p:g": "npx prisma generate",
+    "p:m":"npx prisma migrate dev --name init",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "darshan744",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

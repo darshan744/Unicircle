@@ -23,7 +23,7 @@ model User {
   posts        Post[]    @relation("UserPost")
   likes        Post[]    @relation("LikedPosts")
   savedPost    Post[]    @relation("Saved")
-  profileImage String
+  profileImage String?
   groups       Groups[]
   Comments     Comment[]
 }

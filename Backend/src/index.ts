@@ -1,11 +1,9 @@
 import app from './app'
 import envs from "./Environments";
-
-app.use((req , _ , next)=> {
-    console.log(`Endpoint : ${req.url} , Method : ${req.method}`);
-    next();
+import Logger from './Middlewares/Logger';
+app.use(Logger);
+app.get("/" , (_ , res)=> {
+    res.send("Server is running successfully")
 })
 
-
-
-app.listen(envs.port, () => console.log(`Listening in ${envs.port}`))
+app.listen(envs.port, () => console.log(`Sever listening in http://localhost:${envs.port}`))

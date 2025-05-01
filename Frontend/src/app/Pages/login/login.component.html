@@ -1,0 +1,146 @@
+<div class="h-screen flex justify-center items-center">
+  <p-card class="p-3 rounded w-[28rem] flex flex-col justify-center">
+    <div>
+      <h1 class="text-xl font-semibold text-center">Welcome To UNICIRCLE</h1>
+    </div>
+    <div class="flex gap-0 justify-center mt-3 mb-3">
+      <button
+        pButton
+        class="!rounded-r-none"
+        [severity]="isLogin ? 'contrast' : 'secondary'"
+        (click)="isLogin = true"
+      >
+        Login
+      </button>
+      <button
+        pButton
+        class="!rounded-l-none"
+        [severity]="isLogin ? 'secondary' : 'contrast'"
+        (click)="isLogin = false"
+      >
+        Signup
+      </button>
+    </div>
+    <ng-container
+      class="flex justify-center items-center shadow-2xl shadow-black"
+      *ngIf="!isLogin"
+    >
+      <form
+        (ngSubmit)="signup()"
+        [formGroup]="signUpData"
+        class="flex flex-col justify-center gap-4 w-full"
+      >
+        <p-floatlabel variant="on">
+          <input
+            (change)="checkUserNameAvailable()"
+            formControlName="userName"
+            pInputText
+            class="w-full"
+            type="text"
+            id="signup-user-name"
+            name="signup-user-name"
+          />
+          <label for="signup-user-name">User Name</label>
+        </p-floatlabel>
+        <p-message *ngIf=""></p-message>
+        <p-floatlabel variant="on">
+          <input
+            formControlName="name"
+            pInputText
+            class="w-full"
+            type="text"
+            id="signup-name"
+            name="signup-name"
+          />
+          <label for="signup-name">Name</label>
+        </p-floatlabel>
+        <p-floatlabel variant="on">
+          <input
+            formControlName="email"
+            pInputText
+            class="w-full"
+            type="text"
+            id="signup-email"
+            name="signup-email"
+          />
+          <label for="signup-email">Email</label>
+        </p-floatlabel>
+        <p-floatlabel variant="on">
+          <input
+            formControlName="password"
+            type="password"
+            class="w-full"
+            pPassword
+            id="signup-password"
+            name="signup-password"
+          />
+          <label for="signup-password">Password</label>
+        </p-floatlabel>
+      <button
+            type="submit"
+            class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
+          >
+          Signup
+          </button>
+      </form>
+    </ng-container>
+    <ng-container *ngIf="isLogin">
+      <form
+        (ngSubmit)="login()"
+        [formGroup]="loginInput"
+        class="flex flex-col gap-3"
+      >
+        <p-floatlabel variant="on">
+          <input
+            formControlName="email"
+            pInputText
+            class="w-full"
+            type="text"
+            id="email"
+            name="email"
+          />
+          <label for="signup-email">Email</label>
+        </p-floatlabel>
+        <p-floatlabel variant="on">
+          <input
+            formControlName="password"
+            type="password"
+            class="w-full"
+            pPassword
+            id="password"
+            name="password"
+          />
+          <label for="signup-password">Password</label>
+        </p-floatlabel>
+        
+        <div class="flex justify-end">
+          <p class="text-blue-400">Forgot Password</p>
+        </div>
+        <div class="!w-full mt-4 flex justify-center">
+          <button
+            type="submit"
+            class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </ng-container>
+    <div class="!w-full mt-4 flex justify-center">
+
+    </div>
+    <div class="flex justify-center m-2 items-center">
+      <hr class="w-full bg-gray-900" />
+      <div class="mr-2 ml-2">OR</div>
+      <hr class="w-full bg-gray-900" />
+    </div>
+    <div>
+      <button
+        class="w-full flex items-center justify-center gap-2 cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
+      >
+        <i class="pi pi-google"></i>
+        Continue with Google
+      </button>
+    </div>
+  </p-card>
+</div>

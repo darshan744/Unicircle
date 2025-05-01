@@ -21,6 +21,53 @@
         Signup
       </button>
     </div>
+    <ng-container *ngIf="isLogin">
+      <form
+        (ngSubmit)="login()"
+        [formGroup]="loginInput"
+        class="flex flex-col gap-3"
+      >
+        <p-floatlabel variant="on">
+          <input
+            formControlName="email"
+            pInputText
+            [fluid]="true"
+            type="text"
+            id="email"
+            name="email"
+          />
+          <label for="signup-email">Email</label>
+        </p-floatlabel>
+        @if(loginInput.controls['email'].touched && loginInput.controls['email'].errors?.['email']) {
+          <p-message severity="warn" >Provide valid email</p-message>
+        }
+        <p-floatlabel variant="on">
+          <p-password
+            formControlName="password"
+            class="w-full"
+            [fluid]="true"
+            [toggleMask]="true"
+            id="signup-password"
+            name="password"
+          />
+          <label for="signup-password">Password</label>
+        </p-floatlabel>
+        @if(loginInput.controls['password'].touched && loginInput.controls['password'].errors?.['passwordIsWeak']){
+          <p-message severity="warn"> Password is weak </p-message>
+        }
+        <div class="flex justify-end">
+          <p class="text-blue-400"><a href="">Forgot Password</a></p>
+        </div>
+        <div class="!w-full mt-4 flex justify-center">
+          <button
+            type="submit"
+            class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </ng-container>
     <ng-container
       class="flex justify-center items-center shadow-2xl shadow-black"
       *ngIf="!isLogin"
@@ -35,19 +82,22 @@
             (change)="checkUserNameAvailable()"
             formControlName="userName"
             pInputText
-            class="w-full"
+            [fluid]="true"
             type="text"
             id="signup-user-name"
             name="signup-user-name"
           />
           <label for="signup-user-name">User Name</label>
         </p-floatlabel>
+        @if(userNameTaken()){
+          <p-message severity="warn">User name is Taken</p-message>
+        }
         <p-message *ngIf=""></p-message>
         <p-floatlabel variant="on">
           <input
             formControlName="name"
             pInputText
-            class="w-full"
+            [fluid]="true"
             type="text"
             id="signup-name"
             name="signup-name"
@@ -58,77 +108,38 @@
           <input
             formControlName="email"
             pInputText
-            class="w-full"
+            [fluid]="true"
             type="text"
             id="signup-email"
             name="signup-email"
           />
           <label for="signup-email">Email</label>
         </p-floatlabel>
+        @if(signUpData.controls['email'].touched && signUpData.controls['email'].errors?.['email']){
+          <p-message severity="warn"> Provide a valid Email </p-message>
+        }
         <p-floatlabel variant="on">
           <input
             formControlName="password"
             type="password"
-            class="w-full"
+            [fluid]="true"
             pPassword
             id="signup-password"
             name="signup-password"
           />
           <label for="signup-password">Password</label>
         </p-floatlabel>
-      <button
-            type="submit"
-            class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
-          >
+        @if(signUpData.touched && signUpData.controls['password'].errors?.['passwordIsWeak']) {
+          <p-message severity="warn">Password is Weak</p-message>
+        }
+        <button
+          type="submit"
+          class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
+        >
           Signup
-          </button>
+        </button>
       </form>
     </ng-container>
-    <ng-container *ngIf="isLogin">
-      <form
-        (ngSubmit)="login()"
-        [formGroup]="loginInput"
-        class="flex flex-col gap-3"
-      >
-        <p-floatlabel variant="on">
-          <input
-            formControlName="email"
-            pInputText
-            class="w-full"
-            type="text"
-            id="email"
-            name="email"
-          />
-          <label for="signup-email">Email</label>
-        </p-floatlabel>
-        <p-floatlabel variant="on">
-          <input
-            formControlName="password"
-            type="password"
-            class="w-full"
-            pPassword
-            id="password"
-            name="password"
-          />
-          <label for="signup-password">Password</label>
-        </p-floatlabel>
-        
-        <div class="flex justify-end">
-          <p class="text-blue-400">Forgot Password</p>
-        </div>
-        <div class="!w-full mt-4 flex justify-center">
-          <button
-            type="submit"
-            class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
-          >
-            Login
-          </button>
-        </div>
-      </form>
-    </ng-container>
-    <div class="!w-full mt-4 flex justify-center">
-
-    </div>
     <div class="flex justify-center m-2 items-center">
       <hr class="w-full bg-gray-900" />
       <div class="mr-2 ml-2">OR</div>

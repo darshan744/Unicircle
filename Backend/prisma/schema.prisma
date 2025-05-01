@@ -16,6 +16,7 @@ datasource db {
 
 model User {
   id           String    @id @default(uuid())
+  userName     String    @unique
   name         String
   email        String
   password     String
@@ -26,6 +27,7 @@ model User {
   groups       Groups[]
   Comments     Comment[]
 }
+
 // post model
 model Post {
   id         String    @id @default(uuid())
@@ -41,6 +43,7 @@ model Post {
   savedBy    User[]    @relation("Saved")
   Comments   Comment[]
 }
+
 // tags like developement or web dev
 model Tags {
   id      String  @id @default(uuid())
@@ -48,6 +51,7 @@ model Tags {
   postsId String?
   name    String
 }
+
 // category of the post
 model Category {
   id    String @id @default(uuid())
@@ -57,24 +61,23 @@ model Category {
 
 // Groups similar to Reddit groups 
 model Groups {
-  
   id   String @id @default(uuid())
   name String
-  
+
   User User[]
 }
 
 model Comment {
-  id      String @id @default(uuid())
+  id       String    @id @default(uuid())
   // actual comment
-  comment String
+  comment  String
   // post to which comment
-  post    Post   @relation(fields: [postId], references: [id])
+  post     Post      @relation(fields: [postId], references: [id])
   // who commented
-  user    User   @relation(fields: [userId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
   // relation columns
-  postId  String
-  userId  String
+  postId   String
+  userId   String
   // replies to comments
   replies  Comment[] @relation("Comment Replies")
   // If its a comment null if not set which comment is this replied to

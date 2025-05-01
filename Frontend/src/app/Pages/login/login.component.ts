@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, Signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
@@ -23,7 +23,8 @@ import {isPasswordStrong} from '../../Utils/PasswordValidator'
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  isLogin: boolean = false;
+  userNameTaken = signal(false);
+  isLogin: boolean = true;
   signUpData = new FormGroup({
     userName: new FormControl<string | null>(null, [Validators.required]),
     email: new FormControl<string | null>(null, [
@@ -62,5 +63,9 @@ export class LoginComponent {
   signup() {
 
   }
-  checkUserNameAvailable() {}
+  checkUserNameAvailable() {
+    const value = this.signUpData.get('userName');
+    if(!value) this.userNameTaken.set(false);
+    this.userNameTaken.set(true);
+  }
 }

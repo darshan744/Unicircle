@@ -23,4 +23,4 @@ interface LoginReponse {
 interface UserNameCheck {
   userExist:boolean
 }
-export type { ILogin, ISignup, LoginReponse, UserNameCheck };
+export type { ILogin, ISignup, LoginReponse, UserNameCheck, LoginUser };

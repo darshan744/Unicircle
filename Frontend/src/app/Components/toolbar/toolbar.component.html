@@ -1,1 +1,40 @@
-<p>toolbar works!</p>
+<p-toolbar>
+  <ng-template #start>
+    <a class="text-xl cursor-pointer font-semibold">Unicircle</a>
+  </ng-template>
+  <ng-template #center>
+    <p-iconfield>
+      <p-inputicon styleClass="pi pi-search" />
+      <input pInputText placeholder="Search"/>
+    </p-iconfield>
+  </ng-template>
+  <ng-template #end >
+   <div class="flex gap-3 items-center">
+     <p-menu #menu [popup]="true">
+       <ng-template #item #end>
+         <a class="p-menu-item-link" routerLink="profile"> <i class="pi pi-user"></i> Profile</a>
+        <div class="flex flex-col">
+          <div class="flex justify-between items-center m-3">
+            <i [ngClass]="toggleSignal() ? 'pi pi-moon' : 'pi pi-sun'" class="text-center"> {{toggleSignal() ? "Dark Mode" :"Light Mode"}} </i>
+            <p-toggleswitch (onChange)="toggleTheme()">
+              <ng-template #handle let-checked="checked">
+                <i [ngClass]="['!text-xs' , checked ? 'pi pi-moon' : 'pi pi-sun']"></i>
+              </ng-template>
+            </p-toggleswitch>
+          </div>
+          <a class="p-menu-item-link" routerLink="settings">
+            <i class="pi pi-cog"></i>
+            Settings
+          </a>
+
+        </div>
+      </ng-template>
+    </p-menu>
+    <p-avatar (click)="menu.toggle($event)" icon="pi pi-user" class="cursor-pointer" shape="circle" />
+    <div>
+      <p-button severity="danger" size="small" > <i class="pi pi-sign-out"></i> Logout</p-button>
+    </div>
+
+   </div>
+  </ng-template>
+</p-toolbar>

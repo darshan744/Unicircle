@@ -1,1 +1,56 @@
-<p>profile works!</p>
+<div class="pt-10">
+  <div class="m-16 ml-30">
+    <div class="flex gap-3">
+      <div class="relative inline-block">
+        <p-avatar
+          size="xlarge"
+          icon="pi pi-user"
+          shape="circle"
+          class="!w-[120px] !h-[120px]"
+        ></p-avatar>
+
+        <button
+          class="absolute bottom-2 right-2 p-2 rounded-full bg-white dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-800 duration-200 flex items-center justify-center shadow-md"
+        >
+          <i class="pi pi-camera text-xl"></i>
+        </button>
+      </div>
+
+      <div class="flex gap-1 flex-col justify-center ml-1">
+        <h1 class="text-2xl">DARSHAN</h1>
+        <h2 class="text-gray-300 dark:text-gray-700">Darshan</h2>
+      </div>
+    </div>
+    <div class="flex items-center mt-8">
+      <p-tabs>
+        <p-tablist>
+          <p-tab value="0" class="!mr-16">Posts</p-tab>
+          <p-tab value="1" class="!mr-16">Likes</p-tab>
+          <p-tab value="2" class="!mr-16">Comments</p-tab>
+          <p-tab value="3" class="!mr-16">Saved</p-tab>
+        </p-tablist>
+      </p-tabs>
+    </div>
+  </div>
+</div>
+<!-- <p-iconfield>
+        <p-inputicon
+          styleClass="pi pi-pencil"
+          (click)="userNameEditable = !userNameEditable"
+        ></p-inputicon>
+        <input pInputText value="DARSHAN" [disabled]="userNameEditable" />
+      </p-iconfield>
+      <p-iconfield>
+        <p-inputicon
+          styleClass="pi pi-pencil"
+          (click)="nameEditable = !nameEditable"
+        ></p-inputicon>
+        <input pInputText value="DARSHAN" [disabled]="nameEditable" />
+      </p-iconfield>
+      <p-iconfield>
+        <p-inputicon
+          styleClass="pi pi-pencil"
+          (click)="passwordEditable = !passwordEditable"
+        ></p-inputicon>
+        <input pInputText value="DARSHAN" [disabled]="passwordEditable" />
+      </p-iconfield> -->

@@ -10,6 +10,9 @@
   </ng-template>
   <ng-template #end >
    <div class="flex gap-3 items-center">
+     <div>
+      <p-button severity="secondary" size="small" > <i class="pi pi-plus"></i> Create </p-button>
+    </div>
      <p-menu #menu [popup]="true">
        <ng-template #item #end>
          <a class="p-menu-item-link" routerLink="profile"> <i class="pi pi-user"></i> Profile</a>

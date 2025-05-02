@@ -1,5 +1,6 @@
 import { User } from "../Types/Auth";
 import prisma from "../PrismaClient";
+import { hashPassword } from "../Util/Password";
 
 
 const doesUserExist = async (email: string): Promise<boolean> => {
@@ -14,6 +15,7 @@ const doesUserExist = async (email: string): Promise<boolean> => {
 }
 
 const createUser = async (user: User) => {
+    user.password = await hashPassword(user.password);
     try {
         const userData = prisma.user.create({ data: user });
         return userData
@@ -31,5 +33,7 @@ const findUser = async (email: string) => {
     }
 
 }
-
-export { doesUserExist, createUser, findUser };
+const userNameCheck = async(userName : string) => {
+   return await prisma.user.findFirst({where : {userName}})
+}
+export { doesUserExist, createUser, findUser, userNameCheck };

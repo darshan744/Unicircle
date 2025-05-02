@@ -47,3 +47,5 @@ Backend/src/generated/
 Backend/docker-compose.yml
 Backend/postgres-data
 Backend/prisma/migrations/
+Frontend/src/environments/environment.development.ts
+Frontend/src/environments/environment.ts

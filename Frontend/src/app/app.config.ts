@@ -5,6 +5,8 @@ import { routes } from './app.routes';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura'
 import { MessageService } from 'primeng/api';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './Service/Interceptors/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
@@ -15,6 +17,10 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
+
   ],
 };

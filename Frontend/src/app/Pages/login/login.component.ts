@@ -1,4 +1,4 @@
-import { Component, signal, Signal } from '@angular/core';
+import { Component, signal, Signal, WritableSignal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
@@ -8,6 +8,8 @@ import {CardModule} from 'primeng/card'
 import { MessageModule} from 'primeng/message';
 import {  FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {isPasswordStrong} from '../../Utils/PasswordValidator'
+import { AuthService } from '../../Service/Auth/auth.service';
+import { ToastService } from '../../Service/ToastService/toast.service';
 @Component({
   selector: 'app-login',
   imports: [
@@ -23,7 +25,10 @@ import {isPasswordStrong} from '../../Utils/PasswordValidator'
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  constructor(private authService : AuthService , private toastService :ToastService){}
   userNameTaken = signal(false);
+  userNameTakenMessage : WritableSignal<string> = signal("");
+  userNameTakenBool : WritableSignal<"warn" | "success"> = signal("warn")
   isLogin: boolean = true;
   signUpData = new FormGroup({
     userName: new FormControl<string | null>(null, [Validators.required]),
@@ -59,13 +64,47 @@ export class LoginComponent {
     this.loginInput.markAllAsTouched()
     return;
    }
+   const email = this.loginInput.controls.email.value;
+   const password = this.loginInput.controls.password.value;
+   if(email && password) {
+      this.authService.login({email , password})
+   }
   }
   signup() {
+    if(this.signUpData.invalid) {
+      this.toastService.showToast("Invalid" , "form is Invalid",'info');
+      return;
+    }
+    const email = this.signUpData.controls.email.value;
+    const name = this.signUpData.controls.name.value;
+    const password = this.signUpData.controls.password.value;
+    const userName = this.signUpData.controls.userName.value;
+    if (
+      name !== null &&
+      email !== null &&
+      userName !== null &&
+      password !== null
+    ){
+      this.authService.signup({ email, userName, name, password });
+    }
+
 
   }
   checkUserNameAvailable() {
-    const value = this.signUpData.get('userName');
-    if(!value) this.userNameTaken.set(false);
-    this.userNameTaken.set(true);
+    const control = this.signUpData.get('userName');
+    if (!control) {
+      this.userNameTaken.set(false);
+      return;
+    };
+    if(control.valid && control.value !== null){
+      this.authService.checkUserName(control.value).subscribe(
+        (res) => {
+          this.userNameTaken.set(true);
+          this.userNameTakenMessage.set(res.message);
+          this.userNameTakenBool.set(res.data.userExist ? "warn" : 'success');
+        }
+      );
+    }
+
   }
 }

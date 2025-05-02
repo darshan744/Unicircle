@@ -90,7 +90,7 @@
           <label for="signup-user-name">User Name</label>
         </p-floatlabel>
         @if(userNameTaken()){
-          <p-message severity="warn">User name is Taken</p-message>
+          <p-message [severity]="userNameTakenBool()" [closable]="true" (onClose)="userNameTaken.set(false)"> {{userNameTakenMessage()}} </p-message>
         }
         <p-message *ngIf=""></p-message>
         <p-floatlabel variant="on">
@@ -119,11 +119,12 @@
           <p-message severity="warn"> Provide a valid Email </p-message>
         }
         <p-floatlabel variant="on">
-          <input
+          <p-password
             formControlName="password"
             type="password"
             [fluid]="true"
-            pPassword
+            [toggleMask]="true"
+            
             id="signup-password"
             name="signup-password"
           />

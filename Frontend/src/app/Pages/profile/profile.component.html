@@ -1,24 +1,46 @@
 <div class="pt-10">
-  <div class="m-16 ml-30">
+  <div class="ml-30">
     <div class="flex gap-3">
       <div class="relative inline-block">
         <p-avatar
           size="xlarge"
-          icon="pi pi-user"
+          [icon]="user.profileImage === null ? 'pi pi-user' : undefined"
+          [image]="user.profileImage !== null ? user.profileImage : undefined"
           shape="circle"
           class="!w-[120px] !h-[120px]"
         ></p-avatar>
-
+        <p-popover #popover>
+          <div class="flex gap-2">
+            <div>
+              <p-button (onClick)="clearProfile()" tooltipPosition="left" pTooltip="Delete" icon="pi pi-trash" severity="contrast" size="small"></p-button>
+            </div>
+            <form method="post" accept="multipart/form-data">
+              <p-fileupload pTooltip="Upload"
+                [chooseButtonProps]="{'severity' : 'contrast' , 'size':'small'  , 'label':undefined}"
+                chooseIcon="pi pi-upload"
+                [multiple]="false"
+                accept=".jpg,.png,.jpeg"
+                name="profilePic"
+                auto="true"
+                mode="basic"
+                maxFileSize="10000000"
+                [customUpload]="true"
+                (uploadHandler)="updateProfile($event)"
+              />
+            </form>
+          </div>
+        </p-popover>
         <button
+          (click)="popover.toggle($event)"
           class="absolute bottom-2 right-2 p-2 rounded-full bg-white dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-800 duration-200 flex items-center justify-center shadow-md"
         >
-          <i class="pi pi-camera text-xl"></i>
+          <i class="pi pi-pencil text-xl"></i>
         </button>
       </div>
 
       <div class="flex gap-1 flex-col justify-center ml-1">
-        <h1 class="text-2xl">DARSHAN</h1>
-        <h2 class="text-gray-300 dark:text-gray-700">Darshan</h2>
+        <h1 class="text-2xl">{{ user.name }}</h1>
+        <h2 class="text-gray-300 dark:text-gray-700">{{ user.userName }}</h2>
       </div>
     </div>
     <div class="flex items-center mt-8">

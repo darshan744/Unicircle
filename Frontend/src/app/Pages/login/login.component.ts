@@ -26,9 +26,10 @@ import { ToastService } from '../../Service/ToastService/toast.service';
 })
 export class LoginComponent {
   constructor(private authService : AuthService , private toastService :ToastService){}
-  userNameTaken = signal(false);
+  userNameTakenVisible = signal(false);
   userNameTakenMessage : WritableSignal<string> = signal("");
-  userNameTakenBool : WritableSignal<"warn" | "success"> = signal("warn")
+  userNameTakenStyle : WritableSignal<"warn" | "success"> = signal("warn")
+  userNameTakenBoolean : WritableSignal<boolean> = signal(false);
   isLogin: boolean = true;
   signUpData = new FormGroup({
     userName: new FormControl<string | null>(null, [Validators.required]),
@@ -83,8 +84,9 @@ export class LoginComponent {
       name !== null &&
       email !== null &&
       userName !== null &&
-      password !== null
-    ){
+      password !== null &&
+      !this.userNameTakenBoolean()
+    ) {
       this.authService.signup({ email, userName, name, password });
     }
 
@@ -93,15 +95,16 @@ export class LoginComponent {
   checkUserNameAvailable() {
     const control = this.signUpData.get('userName');
     if (!control) {
-      this.userNameTaken.set(false);
+      this.userNameTakenVisible.set(false);
       return;
     };
     if(control.valid && control.value !== null){
       this.authService.checkUserName(control.value).subscribe(
         (res) => {
-          this.userNameTaken.set(true);
+          this.userNameTakenVisible.set(true);
           this.userNameTakenMessage.set(res.message);
-          this.userNameTakenBool.set(res.data.userExist ? "warn" : 'success');
+          this.userNameTakenBoolean.set(res.data.userExist);
+          this.userNameTakenStyle.set(res.data.userExist ? "warn" : 'success');
         }
       );
     }

@@ -18,17 +18,16 @@ export class AuthService {
     sub.subscribe({
       next:(res)=>{
         this.toastSerivce.showToast("Success" , res.message , "success");
-        this.router.navigate(['user' , res.data.user.id])
+        this.router.navigate(['user' , res.data.user.id , 'home'])
+        localStorage.setItem("user" , JSON.stringify(res.data.user))
       }
     })
   }
   signup(data: ISignup) {
-      console.log(data)
       this.http.post<IBaseResponse<undefined>>(environment.SIGNUP_URL , {user:data}).subscribe({
         next:(res)=>{this.toastSerivce.showToast("Success" , res.message ,"success" );
           // this.router.navigate(['user' , res.dat])
         },
-        error:(error)=>{this.toastSerivce.showToast("Error" , error.message , "danger")}
       })
   }
 
@@ -37,4 +36,5 @@ export class AuthService {
     const observable: Observable<IBaseResponse<UserNameCheck>> = this.http.get<IBaseResponse<UserNameCheck>>(environment.USERNAME_URL, { params: httpParams });
     return observable;
   }
+
 }

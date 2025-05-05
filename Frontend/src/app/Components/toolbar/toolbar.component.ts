@@ -1,16 +1,16 @@
-import { Component, signal, WritableSignal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
 import {ToolbarModule} from 'primeng/toolbar'
 import {AvatarModule} from 'primeng/avatar'
-import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import {IconFieldModule} from 'primeng/iconfield'
 import {InputTextModule} from 'primeng/inputtext'
 import {InputIconModule} from 'primeng/inputicon'
 import { ToggleSwitchModule } from "primeng/toggleswitch";
 import { MenuModule } from "primeng/menu";
+import { UserService } from '../../Service/User/user.service';
 @Component({
   selector: 'app-toolbar',
   imports: [
@@ -23,23 +23,36 @@ import { MenuModule } from "primeng/menu";
     ToggleSwitchModule,
     CommonModule,
     MenuModule,
-    RouterLink
+    RouterLink,
+    FormsModule,
   ],
   templateUrl: './toolbar.component.html',
 })
-export class ToolbarComponent {
-  toggleSignal: WritableSignal<boolean> = signal(false);
-  items: MenuItem[] = [
-    {
-      icon: 'pi pi-home',
-      label: 'Home',
-    },
-  ];
+export class ToolbarComponent implements OnInit {
+  constructor(private userService: UserService, private router: Router) {}
+  themeSignal = model(false);
+  ngOnInit(): void {
+    if (localStorage['theme'] === 'dark') {
+      this.themeSignal.set(true);
+    } else {
+      this.themeSignal.set(false);
+    }
+  }
   toggleTheme() {
-    this.toggleSignal.set(!this.toggleSignal());
     const html = document.querySelector('html');
-    this.toggleSignal()
-      ? html?.classList.add('dark')
-      : html?.classList.remove('dark');
+    html?.classList.toggle('dark');
+    localStorage.setItem('theme', this.themeSignal() ? 'dark' : 'light');
+  }
+
+  logout() {
+    this.userService.logout();
+  }
+
+  navigateToHome() {
+    this.router.navigate(['user', this.userService.userID, 'home']);
+  }
+
+  navigateCreate() {
+    this.router.navigate(['user', this.userService.userID, 'create']);
   }
 }

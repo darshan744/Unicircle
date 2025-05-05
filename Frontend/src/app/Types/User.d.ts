@@ -1,0 +1,3 @@
+interface ProfileResponse {
+  url?:string
+}

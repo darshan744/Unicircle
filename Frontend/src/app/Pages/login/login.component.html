@@ -60,9 +60,9 @@
         </div>
         <div class="!w-full mt-4 flex justify-center">
           <button
-            type="submit"
-            class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
-          >
+            type="submit" fluid="true"
+            severity="contrast"
+            pButton >
             Login
           </button>
         </div>
@@ -89,8 +89,8 @@
           />
           <label for="signup-user-name">User Name</label>
         </p-floatlabel>
-        @if(userNameTaken()){
-          <p-message [severity]="userNameTakenBool()" [closable]="true" (onClose)="userNameTaken.set(false)"> {{userNameTakenMessage()}} </p-message>
+        @if(userNameTakenVisible()){
+          <p-message [severity]="userNameTakenStyle()" [closable]="true" (onClose)="userNameTakenVisible.set(false)"> {{userNameTakenMessage()}} </p-message>
         }
         <p-message *ngIf=""></p-message>
         <p-floatlabel variant="on">
@@ -124,7 +124,6 @@
             type="password"
             [fluid]="true"
             [toggleMask]="true"
-            
             id="signup-password"
             name="signup-password"
           />
@@ -134,8 +133,8 @@
           <p-message severity="warn">Password is Weak</p-message>
         }
         <button
-          type="submit"
-          class="w-full cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
+          type="submit" severity="contrast" fluid="true"
+          pButton
         >
           Signup
         </button>
@@ -147,9 +146,8 @@
       <hr class="w-full bg-gray-900" />
     </div>
     <div>
-      <button
-        class="w-full flex items-center justify-center gap-2 cursor-pointer p-2 rounded bg-[#020617] text-[#f1f5f9] dark:bg-[#ffff] dark:text-[#082f49]"
-      >
+      <button severity="contrast" fluid="true"
+        pButton>
         <i class="pi pi-google"></i>
         Continue with Google
       </button>

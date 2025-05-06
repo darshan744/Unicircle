@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import envs from '../../../environments/environment.development'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ToastService } from '../ToastService/toast.service';
 import IBaseResponse from '../../Types/Response';
 import { LoginUser } from '../../Types/Auth';
@@ -12,17 +12,18 @@ export class UserService {
 
   constructor(private http : HttpClient , private toastService : ToastService , private router : Router) { }
 
-  // getProfileImage() {}
+  // userid
   get userID() {
-    const user = localStorage.getItem("user");
-    const userObj = JSON.parse(user || "{}");
+    const userObj = this.user;
     return userObj.id
   }
+  // user
   get user() {
      const userStr = localStorage.getItem('user');
      const user: LoginUser = JSON.parse(userStr || '{}');
      return user;
   }
+  //upload profile image
   uploadProfileImage(image : File) {
     const formData = new FormData();
     formData.append('profileImage', image);
@@ -40,17 +41,33 @@ export class UserService {
       }
     });
   }
-
+  // delete profile image
   deleteProfileImage() {
     const Url = `${envs.USER_URL}${this.userID}/profile`
     this.http.delete(Url).subscribe((e:any) => {
       this.toastService.showToast("Success" , e.message , "success")
     });
   }
+  // group name checking
+  checkGroupName(groupName : string) {
+    const url = envs.GROUPNAME_CHECK_URL
+    const queryParams = new HttpParams().append('groupName', groupName);
+    return this.http.get<IBaseResponse<{available:boolean}>>(url  ,{params:queryParams});
+  }
+  createGroup(groupName : string , profileImage : File | null) {
+    
+  }
 
+
+
+
+
+  // logout
   logout() {
     localStorage.removeItem("user");
     this.router.navigate(["/"])
     this.toastService.showToast("Logout" ,"Logged Out" , "info")
   }
+
+
 }

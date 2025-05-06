@@ -1,1 +1,16 @@
-<p-editor ></p-editor>
+<div class="m-5">
+    <p-tabs value="1">
+      <p-tablist >
+      <p-tab value="0">Create Post</p-tab>
+      <p-tab value="1">Create Group</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <app-editor />
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <app-create-group />
+      </p-tabpanel>
+    </p-tabpanels>
+    </p-tabs>
+</div>

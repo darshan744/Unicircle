@@ -6,6 +6,7 @@ import { userNameAvailable } from './Controllers/Auth.controller';
 import AuthRoutes from "./Routes/Auth.routes";
 import UserRoute from './Routes/User.routes'
 import errorHandler from "./Middlewares/ErrorHandler";
+import GroupRoutes from "./Routes/Groups.routes";
 
 const app = express();
 app.use(express.json());
@@ -25,7 +26,7 @@ app.get("/" , (_ , res)=> {
 app.use("/api/auth", AuthRoutes);
 app.use("/api/users", UserRoute);
 app.get("/api/username", userNameAvailable);
-
+app.use("/api/groups",GroupRoutes)
 
 
 //MUST BE LAST

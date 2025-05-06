@@ -1,0 +1,47 @@
+<form class="flex flex-col gap-3">
+  <p-floatlabel variant="on">
+    <input
+      (change)="checkGroupName()"
+      pInputText
+      id="grp-name"
+      name="grp-name"
+      [(ngModel)]="groupText"
+      [fluid]="true"
+    />
+    <label for="grp-name">Group Name</label>
+  </p-floatlabel>
+  <div>
+    <p-message
+      *ngIf="messageShow()"
+      [severity]="this.messageAvailable() ? 'success' : 'warn'"
+    >
+      {{ message() }}
+    </p-message>
+  </div>
+  <p-fileupload
+    mode="advanced"
+    accept="image/*"
+    [maxFileSize]="1000000"
+    [auto]="true"
+    [customUpload]="true"
+    [showCancelButton]="false"
+    [showUploadButton]="false"
+    [multiple]="false"
+    [chooseButtonProps]="{ severity: 'contrast', size: 'small' }"
+    (uploadHandler)="groupImageHandler($event)"
+  >
+    <ng-template #empty>
+      <div class="flex flex-col justify-center items-center">
+        <i
+          class="pi pi-cloud-upload !text-3xl p-3 border border-white rounded-[50%]"
+        ></i>
+        <span class="m-1 font-semibold"
+          >Drag and Drop your Profile for Group</span
+        >
+      </div>
+    </ng-template>
+  </p-fileupload>
+  <div class="flex justify-end">
+    <p-button (onClick)="handleGroupCreation()" icon="pi pi-plus" size="small" label="Create" />
+  </div>
+</form>

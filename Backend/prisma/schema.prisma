@@ -24,8 +24,11 @@ model User {
   likes        Post[]    @relation("LikedPosts")
   savedPost    Post[]    @relation("Saved")
   profileImage String?
-  groups       Groups[]
+  //member of multiple groups
+  groups       Groups[]  @relation("GroupMembers")
   Comments     Comment[]
+  // admin of multiple groups
+  adminGroups       Groups[]  @relation("GroupAdmins")
 }
 
 // post model
@@ -33,7 +36,6 @@ model Post {
   id         String    @id @default(uuid())
   User       User      @relation("UserPost", fields: [userId], references: [id])
   tags       Tags[]
-  category   Category  @relation(fields: [categoryId], references: [id])
   userId     String
   categoryId String
   images     String[]
@@ -52,19 +54,13 @@ model Tags {
   name    String
 }
 
-// category of the post
-model Category {
-  id    String @id @default(uuid())
-  name  String
-  Posts Post[]
-}
-
 // Groups similar to Reddit groups 
 model Groups {
-  id   String @id @default(uuid())
-  name String
-
-  User User[]
+  id                String  @id @default(uuid())
+  name              String
+  groupProfileImage String?
+  Users             User[]  @relation("GroupMembers")
+  admins            User[]  @relation("GroupAdmins")
 }
 
 model Comment {

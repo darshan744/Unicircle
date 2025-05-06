@@ -65,6 +65,14 @@ export class CreateGroupComponent {
       );
       return;
     }
-    this.service.createGroup(this.groupText() , this.imageFile())
+    if (!this.messageAvailable()){
+      this.toastService.showToast(
+        "Not Available",
+        "The username is not available",
+        "error"
+      )
+      return;
+    }
+      this.service.createGroup(this.groupText(), this.imageFile()); 
   }
 }

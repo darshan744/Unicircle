@@ -7,7 +7,7 @@ import AuthRoutes from "./Routes/Auth.routes";
 import UserRoute from './Routes/User.routes'
 import errorHandler from "./Middlewares/ErrorHandler";
 import GroupRoutes from "./Routes/Groups.routes";
-
+import AdminRoutes from './Routes/Admin.routes'
 const app = express();
 app.use(express.json());
 app.use(
@@ -27,7 +27,7 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/users", UserRoute);
 app.get("/api/username", userNameAvailable);
 app.use("/api/groups",GroupRoutes)
-
+app.use("/api/admin", AdminRoutes )
 
 //MUST BE LAST
 app.use(errorHandler)

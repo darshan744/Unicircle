@@ -32,7 +32,7 @@
                 [ngClass]="themeSignal() ? 'pi pi-moon' : 'pi pi-sun'"
                 class="text-center"
               >
-                {{ themeSignal() ? "Dark Mode" : "Light Mode" }}
+                {{ (theme$ | async) ? "Dark Mode" : "Light Mode" }}
               </i>
               <p-toggleswitch
                 [ngModel]="theme$ | async"

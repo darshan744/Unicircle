@@ -1,42 +1,71 @@
 <p-toolbar>
   <ng-template #start>
-    <a class="text-xl cursor-pointer font-semibold" (click)="navigateToHome()">Unicircle</a>
+    <a class="text-xl cursor-pointer font-semibold" (click)="navigateToHome()"
+      >Unicircle</a
+    >
   </ng-template>
   <ng-template #center>
     <p-iconfield>
       <p-inputicon styleClass="pi pi-search" />
-      <input pInputText placeholder="Search"/>
+      <input pInputText placeholder="Search" />
     </p-iconfield>
   </ng-template>
-  <ng-template #end >
-   <div class="flex gap-3 items-center">
-     <div>
-      <p-button (onClick)="navigateCreate()" severity="secondary" size="small" > <i class="pi pi-plus"></i> Create </p-button>
-    </div>
-     <p-menu #menu [popup]="true">
-       <ng-template #item #end>
-         <a class="p-menu-item-link" routerLink="profile"> <i class="pi pi-user"></i> Profile</a>
-        <div class="flex flex-col">
-          <div class="flex justify-between items-center m-3">
-            <i [ngClass]="themeSignal() ? 'pi pi-moon' : 'pi pi-sun'" class="text-center"> {{themeSignal() ? "Dark Mode" :"Light Mode"}} </i>
-            <p-toggleswitch (onChange)="toggleTheme()" [(ngModel)]="themeSignal" >
-              <ng-template #handle let-checked="checked">
-                <i [ngClass]="['!text-xs' , checked ? 'pi pi-moon' : 'pi pi-sun']"></i>
-              </ng-template>
-            </p-toggleswitch>
+  <ng-template #end>
+    <div class="flex gap-3 items-center">
+      <div>
+        <p-button
+          (onClick)="navigateCreate()"
+          severity="secondary"
+          size="small"
+        >
+          <i class="pi pi-plus"></i> Create
+        </p-button>
+      </div>
+      <p-menu #menu [popup]="true">
+        <ng-template #item #end>
+          <a class="p-menu-item-link" routerLink="profile">
+            <i class="pi pi-user"></i> Profile</a
+          >
+          <div class="flex flex-col">
+            <div class="flex justify-between items-center m-3">
+              <i
+                [ngClass]="themeSignal() ? 'pi pi-moon' : 'pi pi-sun'"
+                class="text-center"
+              >
+                {{ themeSignal() ? "Dark Mode" : "Light Mode" }}
+              </i>
+              <p-toggleswitch
+                [ngModel]="theme$ | async"
+                (ngModelChange)="toggleTheme($event)"
+              >
+                <ng-template #handle let-checked="checked">
+                  <i
+                    [ngClass]="[
+                      '!text-xs',
+                      checked ? 'pi pi-moon' : 'pi pi-sun'
+                    ]"
+                  ></i>
+                </ng-template>
+              </p-toggleswitch>
+            </div>
+            <a class="p-menu-item-link" routerLink="settings">
+              <i class="pi pi-cog"></i>
+              Settings
+            </a>
           </div>
-          <a class="p-menu-item-link" routerLink="settings">
-            <i class="pi pi-cog"></i>
-            Settings
-          </a>
-        </div>
-      </ng-template>
-    </p-menu>
-    <p-avatar (click)="menu.toggle($event)" icon="pi pi-user" class="cursor-pointer" shape="circle" />
-    <div>
-      <p-button (onClick)="logout()" severity="danger" size="small" > <i class="pi pi-sign-out"></i> Logout</p-button>
+        </ng-template>
+      </p-menu>
+      <p-avatar
+        (click)="menu.toggle($event)"
+        icon="pi pi-user"
+        class="cursor-pointer"
+        shape="circle"
+      />
+      <div>
+        <p-button (onClick)="logout()" severity="danger" size="small">
+          <i class="pi pi-sign-out"></i> Logout</p-button
+        >
+      </div>
     </div>
-
-   </div>
   </ng-template>
 </p-toolbar>

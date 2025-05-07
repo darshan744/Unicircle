@@ -1,16 +1,26 @@
-import { Component, model, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  model,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {ToolbarModule} from 'primeng/toolbar'
-import {AvatarModule} from 'primeng/avatar'
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { FormsModule, NgModel } from '@angular/forms';
+import { ToolbarModule } from 'primeng/toolbar';
+import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
-import {IconFieldModule} from 'primeng/iconfield'
-import {InputTextModule} from 'primeng/inputtext'
-import {InputIconModule} from 'primeng/inputicon'
-import { ToggleSwitchModule } from "primeng/toggleswitch";
-import { MenuModule } from "primeng/menu";
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputIconModule } from 'primeng/inputicon';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../Service/User/user.service';
+import { Store } from '@ngrx/store';
+import StoreType from '../../Store/Store';
+import { Observable } from 'rxjs';
+import { toggle } from '../../Store/Theme/Theme.actions';
 @Component({
   selector: 'app-toolbar',
   imports: [
@@ -25,11 +35,19 @@ import { UserService } from '../../Service/User/user.service';
     MenuModule,
     RouterLink,
     FormsModule,
+
   ],
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnInit {
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private store: Store<StoreType>
+  ) {
+    this.theme$ = this.store.select('theme');
+  }
+  theme$: Observable<boolean>;
   themeSignal = model(false);
   ngOnInit(): void {
     if (localStorage['theme'] === 'dark') {
@@ -38,10 +56,9 @@ export class ToolbarComponent implements OnInit {
       this.themeSignal.set(false);
     }
   }
-  toggleTheme() {
+  toggleTheme(event : boolean) {
     const html = document.querySelector('html');
-    html?.classList.toggle('dark');
-    localStorage.setItem('theme', this.themeSignal() ? 'dark' : 'light');
+    this.store.dispatch(toggle({darkMode:event}))
   }
 
   logout() {

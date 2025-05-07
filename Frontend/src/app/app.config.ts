@@ -9,26 +9,31 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './Service/Interceptors/Auth/auth.interceptor';
 import { errorInterceptor } from './Service/Interceptors/Error/error.interceptor';
 import { provideQuillConfig } from 'ngx-quill/config';
-import quillToobarConfig from './Utils/QuillConfig'
+import quillToobarConfig from './Utils/QuillConfig';
+import { provideStore } from '@ngrx/store'
+import { themeReducer } from './Store/Theme/Theme.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     providePrimeNG({
-      theme: {
-        preset: Aura,
-        options: {
-          darkModeSelector: '.dark',
+        theme: {
+            preset: Aura,
+            options: {
+                darkModeSelector: '.dark',
+            },
         },
-      },
     }),
     provideQuillConfig({
-      modules: {
-        toolbar: quillToobarConfig,
-      },
+        modules: {
+            toolbar: quillToobarConfig,
+        },
     }),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
-  ],
+    provideStore({
+      theme : themeReducer
+    })
+],
 };

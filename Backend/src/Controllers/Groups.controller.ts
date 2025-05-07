@@ -50,6 +50,6 @@ export const createGroup = async (req: Request, res: Response, next: NextFunctio
         ).end(imageFile.buffer)
     }
     else {
-        res.status(200).json({ message: "Group Created", data: groupDB })
+        res.status(200).json({ message: "Group Created", data: groupDB })   
     }
 }

@@ -1,15 +1,21 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
+import { QuillModule } from 'ngx-quill';
+
 import { FileSelectEvent, FileUpload } from 'primeng/fileupload';
 import { EditorModule } from 'primeng/editor';
-import { QuillModule } from 'ngx-quill';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
 import { ChipModule } from 'primeng/chip';
 import { InputTextModule } from 'primeng/inputtext';
-import {FloatLabel} from 'primeng/floatlabel';
+import { FloatLabel } from 'primeng/floatlabel';
 import { TabsModule } from 'primeng/tabs';
-import {Textarea} from 'primeng/textarea'
+import { UserGroup } from '../../Types/User';
+import { Store } from '@ngrx/store';
+import StoreType from '../../Store/Store';
+import {Select} from 'primeng/select'
 @Component({
   selector: 'app-editor',
   imports: [
@@ -23,12 +29,13 @@ import {Textarea} from 'primeng/textarea'
     InputTextModule,
     FloatLabel,
     TabsModule,
-    Textarea,
+    Select,
   ],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
 })
-export class EditorComponent {
+export class EditorComponent implements OnInit {
+  constructor(private store: Store<StoreType>) {}
   //post tags
   tags: string[] = [];
   //post title
@@ -36,9 +43,14 @@ export class EditorComponent {
   // post description
   tagText = signal('');
   // groups
+  groups: Observable<UserGroup[]> = new Observable();
   // TODO
   text: string = '';
   files: File[] = [];
+
+  ngOnInit(): void {
+    this.groups = this.store.select('group');
+  }
 
   addTags() {
     const value = this.tagText();

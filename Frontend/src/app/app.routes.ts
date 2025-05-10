@@ -31,6 +31,7 @@ export const routes: Routes = [
         path:"create",
         component:CreatePostComponent
       }
-    ]
+
+    ],
   }
 ];

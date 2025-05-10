@@ -5,6 +5,15 @@ import { ToastService } from '../ToastService/toast.service';
 import IBaseResponse from '../../Types/Response';
 import { LoginUser } from '../../Types/Auth';
 import { Router } from '@angular/router';
+import {
+  GroupCreationResponse,
+  ProfileResponse,
+  UserGroup,
+} from '../../Types/User';
+import { map } from 'rxjs';
+import { Store } from '@ngrx/store';
+import StoreType from '../../Store/Store';
+import { setGroup } from '../../Store/Groups/Group.actions';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,7 +21,8 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private store: Store<StoreType>
   ) {}
 
   // userid
@@ -84,6 +94,13 @@ export class UserService {
           'success'
         )
       );
+  }
+  // get user groups
+  getUserGroups() {
+    const url = `${envs.SINGLEUSER_GROUPS_URL}${this.userID}`;
+    return this.http
+      .get<IBaseResponse<UserGroup[]>>(url)
+      .pipe(map((val) => val.data));
   }
 
   // logout

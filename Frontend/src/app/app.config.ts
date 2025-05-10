@@ -12,6 +12,10 @@ import { provideQuillConfig } from 'ngx-quill/config';
 import quillToobarConfig from './Utils/QuillConfig';
 import { provideStore } from '@ngrx/store'
 import { themeReducer } from './Store/Theme/Theme.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { ToggleEffects } from './Store/Theme/Theme.effects';
+import { GroupEffects } from './Store/Groups/Group.effects';
+import { groupReducer } from './Store/Groups/Group.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
@@ -33,7 +37,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
     provideStore({
-      theme : themeReducer
-    })
+        theme: themeReducer,
+        group:groupReducer
+    }),
+    provideEffects([ToggleEffects , GroupEffects])
 ],
 };

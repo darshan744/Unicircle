@@ -1,7 +1,3 @@
-.p-tablist-tab-list{
-    gap: 10rem !important;
+.p-tabpanels{
+  background: #121313 !important;
 }
-.p-tablist {
-  gap: 10rem !important;
-}
-

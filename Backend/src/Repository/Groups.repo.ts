@@ -33,3 +33,29 @@ export const deleteGroup = async (id: string) => {
     return res;
 }
 
+export const userGroups = async (userId: string) => {
+    const res = await prisma.groups.findMany(
+        {
+            where:
+            {
+                admins:
+                {
+                    some:
+                        { id: userId }
+                }
+            },
+            select: {
+                groupProfileImage: true,
+                admins: {
+                    select: {
+                        name:true,
+                        userName:true,
+                    }
+                },
+                name: true,
+                Users: true,
+            }
+        })
+    return res;
+}
+

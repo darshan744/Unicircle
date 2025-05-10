@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
-import {Tab, TabList, Tabs} from 'primeng/tabs'
-import {Avatar} from 'primeng/avatar'
-import { LoginUser } from '../../Types/Auth';
+import { Store } from '@ngrx/store';
+
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Avatar } from 'primeng/avatar';
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
-import {PopoverModule} from 'primeng/popover'
-import { UserService } from '../../Service/User/user.service';
+import { PopoverModule } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
-import {TooltipModule} from 'primeng/tooltip'
+import { TooltipModule } from 'primeng/tooltip';
+
+import { UserGroupListComponent } from '../../Components/user-group-list/user-group-list.component';
+import { UserPostsComponent } from '../../Components/user-posts/user-posts.component';
+import { UserCommnetsComponent } from '../../Components/user-commnets/user-commnets.component';
+
+import { UserService } from '../../Service/User/user.service';
+import { LoginUser } from '../../Types/Auth';
 @Component({
   selector: 'app-profile',
   imports: [
@@ -18,18 +25,23 @@ import {TooltipModule} from 'primeng/tooltip'
     FileUploadModule,
     ButtonModule,
     TooltipModule,
+    UserGroupListComponent,
+    TabPanels,
+    TabPanel,
+    UserPostsComponent,
+    UserCommnetsComponent,
   ],
-  // styles: '.p-tablist-tab-list {gap:10rem !important;}',
   styleUrl: './profile.component.css',
   templateUrl: './profile.component.html',
 })
 export class ProfileComponent {
   user: LoginUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-  constructor(private service: UserService) {}
-
+  constructor(private service: UserService,) {}
+  ngOnInit() {
+  }
   clearProfile() {
-    this.service.deleteProfileImage()
+    this.service.deleteProfileImage();
   }
 
   updateProfile(event: FileUploadHandlerEvent) {

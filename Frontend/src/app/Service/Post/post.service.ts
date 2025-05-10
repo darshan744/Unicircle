@@ -46,4 +46,6 @@ export class PostService {
         );
       });
   }
+
+  getUserPost(id : string) {}
 }

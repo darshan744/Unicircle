@@ -27,6 +27,39 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
         return next(new Exception(HttpStatusCode.BAD_REQUEST, "Invalid Body"))
     }
     PostRepo.createPost(body, String(id))
-        .then((postResult) => res.json({ message: "Post createdSuccesfully", data: postResult }))
+        .then((postResult) => {
+            if (imageFiles) {
+                const uploadPromises: Promise<string>[] = (imageFiles as Express.Multer.File[]).map(file =>
+                    new Promise((resolve, reject) => {
+                        cloudinary.uploader.upload_stream(
+                            { folder: `Post_Images/${postResult.groupsId}`, public_id: postResult.id },
+                            (err, uploadResult) => {
+                                if (err) {
+                                    return reject(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, "Error in Uploading images " + err.message))
+                                }
+                                const url = uploadResult?.url
+                                if (!url) {
+                                    return reject(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, "Error in Uploading images"))
+                                }
+                                resolve(url);
+                            }
+                        ).end(file.buffer)
+                    })
+                );
+                Promise.all(uploadPromises)
+                    .then((imageUrls: string[]) =>
+                        PostRepo.addImageLink(postResult.id, imageUrls)
+                            .then((repoResult) => res.json({ message: "Success", data: repoResult }))
+                            .catch((err) => next(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, err.message)))
+                    ).catch((err) => next(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, err.message)))
+            }
+            else {
+                res.json({ message: "Post created Succesfully", data: postResult })
+            }
+        })
         .catch((err) => next(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, err.message)))
+}
+
+export const getUserPost = async (req: Request, res: Response, next: NextFunction) => {
+
 }

@@ -1,11 +1,15 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 import { QuillModule } from 'ngx-quill';
 
-import { FileSelectEvent, FileUpload } from 'primeng/fileupload';
+import {
+  FileRemoveEvent,
+  FileSelectEvent,
+  FileUpload,
+} from 'primeng/fileupload';
 import { EditorModule } from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
@@ -15,13 +19,16 @@ import { TabsModule } from 'primeng/tabs';
 import { UserGroup } from '../../Types/User';
 import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
-import {Select} from 'primeng/select'
+import { Select } from 'primeng/select';
+import { strIsEmpty } from '../../Utils/Util';
+import { ToastService } from '../../Service/ToastService/toast.service';
+import { PostService } from '../../Service/Post/post.service';
+
 @Component({
   selector: 'app-editor',
   imports: [
     EditorModule,
     FormsModule,
-    QuillModule,
     ButtonModule,
     FileUpload,
     CommonModule,
@@ -35,61 +42,95 @@ import {Select} from 'primeng/select'
   styleUrl: './editor.component.css',
 })
 export class EditorComponent implements OnInit {
-  constructor(private store: Store<StoreType>) {}
+  constructor(
+    private store: Store<StoreType>,
+    private toast: ToastService,
+    private service: PostService
+  ) {}
   //post tags
   tags: string[] = [];
   //post title
-  postTitle: string = '';
+  postTitle = signal('');
   // post description
   tagText = signal('');
   // groups
   groups: Observable<UserGroup[]> = new Observable();
-  // TODO
-  text: string = '';
+  //post description
+  postDescription: string = '';
+  // image files
   files: File[] = [];
-
+  // selectedGroup;
+  selectedGroup = signal<UserGroup>({} as UserGroup);
   ngOnInit(): void {
     this.groups = this.store.select('group');
   }
-
-  addTags() {
-    const value = this.tagText();
-    const isEmpty = this.strIsEmpty(value);
-    if (isEmpty && value !== undefined && value !== null) {
-      this.tags.push(value);
-    }
-    this.tagText.set('');
-  }
+  /**
+   * @param index number
+   * @description To remove the tag based on index
+   */
   tagRemove(index: number) {
-    this.tags = this.tags.filter((_tag, idx) => {
-      return idx !== index;
-    });
+    this.tags = this.tags.filter((_tag, idx) => idx !== index);
   }
-  strIsEmpty(str: string): boolean {
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] !== ' ') {
-        return true;
-      }
-    }
-    return false;
-  }
-  logger(event: FileSelectEvent) {
+
+  /**
+   * @param event File Event
+   * @description current files that is selected
+   */
+  uploadImage(event: FileSelectEvent) {
     this.files = event.currentFiles;
   }
-  loggin(el: any) {
+  /**
+   * @param el Event
+   * @description remove the image
+   */
+  removeImage(el: FileRemoveEvent) {
+    console.log(el);
     this.files.filter((e) => e !== el.file);
   }
-  filelogg() {}
-
+  /**
+   * @param e Event
+   * @description If enter is pressed then the current value is checked (for Non Empty String)
+   *  and then added to tag
+   */
   enterTagHandler(e: KeyboardEvent) {
     const isEnter = e.key === 'Enter';
     let value = this.tagText();
     value = value.trimStart().trimEnd();
-    const isEmpty = this.strIsEmpty(value);
+    const isEmpty = strIsEmpty(value);
     if (isEnter && isEmpty) {
       this.tags.push(this.tagText());
       this.tagText.set('');
     }
+  }
+
+  submit(): void {
+    const selectedGroup = this.selectedGroup();
+    const title = this.postTitle();
+    const tags = this.tags;
+    const description = this.postDescription;
+    if (!selectedGroup) {
+      return this.toast.showToast(
+        'Empty Field ',
+        'Please select a Group',
+        'warn'
+      );
+    }
+    if (!title || !strIsEmpty(title)) {
+      return this.toast.showToast(
+        'Empty Field ',
+        'Please enter the title',
+        'warn'
+      );
+    }
+    if (!description || !strIsEmpty(description)) {
+      return this.toast.showToast(
+        'Empty Field ',
+        'Please enter your description',
+        'warn'
+      );
+    }
+    const post = { group: selectedGroup.id, title, tags, description };
+    this.service.createPost(post , this.files);
   }
 }
 

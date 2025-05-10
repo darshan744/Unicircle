@@ -28,30 +28,32 @@ model User {
   groups       Groups[]  @relation("GroupMembers")
   Comments     Comment[]
   // admin of multiple groups
-  adminGroups       Groups[]  @relation("GroupAdmins")
+  adminGroups  Groups[]  @relation("GroupAdmins")
 }
 
 // post model
 model Post {
-  id         String    @id @default(uuid())
-  User       User      @relation("UserPost", fields: [userId], references: [id])
-  tags       Tags[]
-  userId     String
-  categoryId String
-  images     String[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  likedBy    User[]    @relation("LikedPosts")
-  savedBy    User[]    @relation("Saved")
-  Comments   Comment[]
+  id          String    @id @default(uuid())
+  User        User      @relation("UserPost", fields: [userId], references: [id])
+  title       String
+  description String
+  tags        Tags[]
+  userId      String
+  images      String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  likedBy     User[]    @relation("LikedPosts")
+  savedBy     User[]    @relation("Saved")
+  Comments    Comment[]
+  group       Groups    @relation(fields: [groupsId], references: [id])
+  groupsId    String
 }
 
 // tags like developement or web dev
 model Tags {
-  id      String  @id @default(uuid())
-  Posts   Post?   @relation(fields: [postsId], references: [id])
-  postsId String?
-  name    String
+  id   String @id @default(uuid())
+  name String @unique 
+  Post Post[]
 }
 
 // Groups similar to Reddit groups 
@@ -61,6 +63,7 @@ model Groups {
   groupProfileImage String?
   Users             User[]  @relation("GroupMembers")
   admins            User[]  @relation("GroupAdmins")
+  Post              Post[]
 }
 
 model Comment {

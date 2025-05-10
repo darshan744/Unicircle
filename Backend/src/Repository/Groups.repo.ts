@@ -48,12 +48,13 @@ export const userGroups = async (userId: string) => {
                 groupProfileImage: true,
                 admins: {
                     select: {
-                        name:true,
-                        userName:true,
+                        name: true,
+                        userName: true,
                     }
                 },
                 name: true,
                 Users: true,
+                id: true
             }
         })
     return res;

@@ -5,6 +5,7 @@
         <p-select
           [fluid]="true"
           [options]="(groups | async) || []"
+          [(ngModel)]="selectedGroup"
           optionLabel="name"
           placeholder="Select Group"
         >
@@ -21,7 +22,7 @@
           </ng-template>
         </p-select>
       </div>
-      <input pInputText placeholder="Title" [required]="true" />
+      <input pInputText [(ngModel)]="postTitle" placeholder="Title" [required]="true" />
       <p-floatlabel>
         <input
           [fluid]="true"
@@ -42,8 +43,8 @@
         />
       </div>
       <p-fileupload
-        (onSelect)="logger($event)"
-        (onRemove)="loggin($event)"
+        (onSelect)="uploadImage($event)"
+        (onRemove)="removeImage($event)"
         [uploadButtonProps]="{ size: 'small', severity: 'secondary' }"
         [cancelButtonProps]="{ size: 'small', severity: 'secondary' }"
         [chooseButtonProps]="{ severity: 'contrast', size: 'small' }"
@@ -63,10 +64,10 @@
       </p-fileupload>
     </div>
     <div>
-      <p-editor [(ngModel)]="text" />
+      <p-editor [(ngModel)]="postDescription" />
     </div>
     <div class="mt-3 flex justify-end">
-      <p-button (onClick)="filelogg()" label="LOG" />
+      <p-button (onClick)="submit()" label="LOG" />
     </div>
   </div>
 </div>

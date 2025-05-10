@@ -8,6 +8,7 @@ interface GroupCreationResponse {
 }
 
 export interface UserGroup {
+  id:string
   groupProfileImage: string;
   admins: GroupUserAndAdmin[];
   name: string;
@@ -19,4 +20,13 @@ interface GroupUserAndAdmin {
   userName: string;
 }
 
-
+export interface PostCreationResponse {
+  title: string;
+  description: string;
+  id: string;
+  userId: string;
+  images: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  groupsId: string;
+}

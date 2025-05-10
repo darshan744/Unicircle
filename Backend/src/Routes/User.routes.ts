@@ -15,7 +15,6 @@ router
 
 router.post("/images" , upload.array("files") , (req , res)=>{
   const files = req.files;
-  console.log(files)
   res.json({files})
 })
 

@@ -13,7 +13,6 @@ import {
 import { map } from 'rxjs';
 import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
-import { setGroup } from '../../Store/Groups/Group.actions';
 @Injectable({
   providedIn: 'root',
 })
@@ -102,7 +101,6 @@ export class UserService {
       .get<IBaseResponse<UserGroup[]>>(url)
       .pipe(map((val) => val.data));
   }
-
   // logout
   logout() {
     localStorage.removeItem('user');

@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-2 ml-3 mb-3 pr-2 h-screen ">
+  <div class="m-4">
+    <div *ngFor="let group of userGroups | async">
+      <div class="flex items-center gap-2 mt-4">
+        @let profile = group.groupProfileImage;
+        <p-avatar
+          [image]="profile ?? undefined"
+          [label]="profile ? undefined : group.name.charAt(0)"
+        />
+        <span class="text-xl"> {{ group.name }} </span>
+      </div>
+    </div>
+  </div>
+</div>

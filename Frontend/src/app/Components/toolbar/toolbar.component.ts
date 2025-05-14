@@ -9,7 +9,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
-import { AvatarModule } from 'primeng/avatar';
+import { Avatar, AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +21,8 @@ import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
 import { Observable } from 'rxjs';
 import { toggle } from '../../Store/Theme/Theme.actions';
+import { Select } from 'primeng/select';
+import { UserGroup } from '../../Types/User';
 @Component({
   selector: 'app-toolbar',
   imports: [
@@ -35,16 +37,17 @@ import { toggle } from '../../Store/Theme/Theme.actions';
     MenuModule,
     RouterLink,
     FormsModule,
-
   ],
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnInit {
+  userGroups$ : Observable<UserGroup[]> = new Observable()
   constructor(
     private userService: UserService,
     private router: Router,
     private store: Store<StoreType>
   ) {
+    this.userGroups$ = this.store.select("group");
     this.theme$ = this.store.select('theme');
   }
   theme$: Observable<boolean>;
@@ -56,9 +59,9 @@ export class ToolbarComponent implements OnInit {
       this.themeSignal.set(false);
     }
   }
-  toggleTheme(event : boolean) {
+  toggleTheme(event: boolean) {
     const html = document.querySelector('html');
-    this.store.dispatch(toggle({darkMode:event}))
+    this.store.dispatch(toggle({ darkMode: event }));
   }
 
   logout() {

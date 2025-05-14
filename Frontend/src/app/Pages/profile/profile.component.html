@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="mt-10 mr-10">
-      <p-tabs value="4">
+      <p-tabs value="0">
           <p-tablist class="flex w-full">
           <p-tab value="0" class="flex-1 !text-center">Posts</p-tab>
           <p-tab value="1" class="flex-1 !text-center">Likes</p-tab>
@@ -63,9 +63,9 @@
           <p-tab value="3" class="flex-1 !text-center">Saved</p-tab>
           <p-tab value="4" class="flex-1 !text-center">Groups</p-tab>
         </p-tablist>
-        <p-tabpanels>
+        <p-tabpanels class="">
           <p-tabpanel value="0">
-            <app-user-posts />
+            <app-user-posts class="grid grid-cols-2" />
           </p-tabpanel>
           <p-tabpanel value="1"></p-tabpanel>
           <p-tabpanel value="2">

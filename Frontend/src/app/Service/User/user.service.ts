@@ -13,6 +13,7 @@ import {
 import { map } from 'rxjs';
 import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
+import { initGroup } from '../../Store/Groups/Group.actions';
 @Injectable({
   providedIn: 'root',
 })
@@ -79,19 +80,20 @@ export class UserService {
     // i.e for upload.single("profileImage")
     // it will parse that and be accessable with req.file
     // and the rest as req.body
-
     const params = new HttpParams().append('id', this.userID);
     formData.append('groupName', groupName);
     this.http
       .post<IBaseResponse<GroupCreationResponse>>(envs.GROUP_CREATE, formData, {
         params,
       })
-      .subscribe((res) =>
+      .subscribe((res) => {
         this.toastService.showToast(
           'Success',
           `Group ${res.data.name} is successfull`,
           'success'
-        )
+        );
+        this.store.dispatch(initGroup())
+      }
       );
   }
   // get user groups

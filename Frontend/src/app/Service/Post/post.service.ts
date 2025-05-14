@@ -3,7 +3,7 @@ import { ToastService } from '../ToastService/toast.service';
 import { UserService } from '../User/user.service';
 import environment from '../../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { PostCreationResponse, UserGroup } from '../../Types/User';
+import { PostCreationResponse, UserGroup, UserPostResponse } from '../../Types/User';
 import IBaseResponse from '../../Types/Response';
 @Injectable({
   providedIn: 'root',
@@ -44,8 +44,13 @@ export class PostService {
           `Post created id : ${e.data.id} , title : ${e.data.title}`,
           'success'
         );
+        console.log(e.data)
       });
   }
 
-  getUserPost(id : string) {}
+  getUserPost() {
+    const url = `${environment.USER_POSTS}${this.user.userID}`
+    return this.http
+      .get<IBaseResponse<UserPostResponse>>(url)
+  }
 }

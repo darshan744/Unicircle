@@ -59,6 +59,14 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
     
 }
 
+/**
+ * 
+ * @method GET
+ * @route /api/posts/user/:userId
+ * @description Returns the user's posts alone 
+ */
 export const getUserPost = async (req: Request, res: Response, next: NextFunction) => {
-
+    const id = req.params.id;
+    const posts = await PostRepo.userPost(String(id));
+    res.json({message : "Posts" , data : posts})
 }

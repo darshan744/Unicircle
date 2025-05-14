@@ -1,6 +1,6 @@
 import { Request , Response } from "express";
 import { deleteAllGroups, deleteUserWithId, getGroups, getUsers } from "../Repository/Admin.repo";
-
+import { getAllPosts } from "../Repository/Posts.repo";
 export const getAllGroups = async (req : Request , res : Response) => {
     const groups = await getGroups()
     res.status(200).json({groups});
@@ -18,5 +18,9 @@ export const deleteUser = async(req : Request , res : Response) => {
         const id = req.query.id
         const user = await deleteUserWithId(id as string)
         res.status(200).json({user})
-}   
+}
+export const posts = async (_ :Request ,res : Response) => {
+    const posts = await getAllPosts();
+    res.json({posts})
+}
  

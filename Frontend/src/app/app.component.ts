@@ -4,9 +4,10 @@ import { ToastModule } from 'primeng/toast';
 import { ToastComponent } from './Components/toast/toast.component';
 import { Store } from '@ngrx/store';
 import { toggle } from './Store/Theme/Theme.actions';
+import { LoadingComponent } from "./Components/loading/loading.component";
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastModule, ToastComponent],
+  imports: [RouterOutlet, ToastModule, ToastComponent, LoadingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

@@ -1,1 +1,13 @@
-<p>user-posts works!</p>
+<p-card
+  *ngFor="let post of posts | async"
+  class="p-2 rounded rounde-lg m-2 gap-2 min-w-8xl"
+>
+  <div class="flex justify-between">
+    <h1 class="text-2xl font-semibold text-gray-600">{{ post.title }}</h1>
+    <p-button size="small" icon="pi pi-eye" severity="secondary" />
+  </div>
+  <div
+    [innerHTML]="post.description"
+    class="overflow-hidden whitespace-nowrap text-ellipsis"
+  ></div>
+</p-card>

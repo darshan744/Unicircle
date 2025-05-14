@@ -6,6 +6,22 @@ interface GroupCreationResponse {
   name: string;
   groupProfileImage: string | null;
 }
+interface GroupUserAndAdmin {
+  name: string;
+  userName: string;
+}
+
+export interface UserPost {
+  id: string;
+  title: string;
+  description: string;
+  userId: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
+  groupsId: string;
+}
+
 
 export interface UserGroup {
   id:string
@@ -15,10 +31,6 @@ export interface UserGroup {
   Users: GroupUserAndAdmin[];
 }
 
-interface GroupUserAndAdmin {
-  name: string;
-  userName: string;
-}
 
 export interface PostCreationResponse {
   title: string;
@@ -30,3 +42,10 @@ export interface PostCreationResponse {
   updatedAt: Date;
   groupsId: string;
 }
+
+export interface UserPostResponse {
+  posts: UserPost[];
+}
+
+
+

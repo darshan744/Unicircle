@@ -1,9 +1,11 @@
-import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { inject, Injectable } from '@angular/core';
-import { initGroup, setGroup } from './Group.actions';
+
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
+
 import StoreType from '../Store';
+import { initGroup, setGroup } from './Group.actions';
 import { UserService } from '../../Service/User/user.service';
 @Injectable()
 export class GroupEffects {

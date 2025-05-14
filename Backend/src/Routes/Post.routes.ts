@@ -4,5 +4,5 @@ import * as PostController from '../Controllers/Post.controller'
 const router = Router();
 
 router.post("/", upload.array("Images"),PostController.createPost);
-router.get("/user/:userId")
+router.get("/user/:id" , PostController.getUserPost);
 export default router

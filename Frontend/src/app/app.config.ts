@@ -23,6 +23,7 @@ import { authInterceptor } from './Service/Interceptors/Auth/auth.interceptor';
 import { errorInterceptor } from './Service/Interceptors/Error/error.interceptor';
 import { loadingInterceptor } from './Service/Interceptors/Loading/loading.interceptor';
 import { PostEffect } from './Store/Post/Post.effects';
+import { postReducer } from './Store/Post/Post.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +46,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       theme: themeReducer,
       group: groupReducer,
+      posts : postReducer
     }),
     provideEffects([ToggleEffects, GroupEffects, PostEffect]),
   ],

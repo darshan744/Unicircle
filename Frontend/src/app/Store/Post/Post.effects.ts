@@ -9,16 +9,14 @@ import { map, switchMap } from 'rxjs';
 export class PostEffect {
   actions = inject(Actions);
   constructor(private postService: PostService) {}
-  postEffect = createEffect(
-    () =>
-      this.actions.pipe(
-        ofType(initPost),
-        switchMap(() =>
-          this.postService
-            .getUserPost()
-            .pipe(map((res) => setPosts({ value: res.data.posts })))
-        )
-      ),
-    { dispatch: false }
+  postEffect = createEffect(() =>
+    this.actions.pipe(
+      ofType(initPost),
+      switchMap(() =>
+        this.postService
+          .getUserPost()
+          .pipe(map((res) => setPosts({ value: res.data.posts })))
+      )
+    )
   );
 }

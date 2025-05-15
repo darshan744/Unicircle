@@ -5,6 +5,8 @@ import { map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Store } from '@ngrx/store';
+import StoreType from '../../Store/Store';
 
 @Component({
   selector: 'app-user-posts',
@@ -16,11 +18,10 @@ export class UserPostsComponent implements OnInit {
   // array containing posts
   posts: Observable<Array<UserPost>> = new Observable();
 
-  constructor(private service: PostService) {}
+  constructor( private store : Store<StoreType>) {}
 
   ngOnInit(): void {
-    this.posts = this.service
-      .getUserPost()
-      .pipe(map((postResponse) => postResponse.data.posts));
+    this.posts = this.store.select("posts");
+    this.posts.subscribe(e => console.log(e))
   }
 }

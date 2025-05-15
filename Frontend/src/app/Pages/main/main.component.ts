@@ -4,6 +4,7 @@ import { ToolbarComponent } from '../../Components/toolbar/toolbar.component';
 import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
 import { initGroup } from '../../Store/Groups/Group.actions';
+import { initPost } from '../../Store/Post/Post.actions';
 
 @Component({
   selector: 'app-main',
@@ -14,5 +15,6 @@ export class MainComponent {
   constructor(private store: Store<StoreType>) {}
   ngOnInit(): void {
     this.store.dispatch(initGroup());
+    this.store.dispatch(initPost())
   }
 }

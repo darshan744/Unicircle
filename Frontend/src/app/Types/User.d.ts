@@ -12,25 +12,26 @@ interface GroupUserAndAdmin {
 }
 
 export interface UserPost {
-  id: string;
   title: string;
   description: string;
-  userId: string;
+  group: {
+    id: string;
+    name: string;
+    groupProfileImage: string | null;
+  };
+  id: string;
   images: string[];
-  createdAt: string;
-  updatedAt: string;
-  groupsId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-
 export interface UserGroup {
-  id:string
+  id: string;
   groupProfileImage: string;
   admins: GroupUserAndAdmin[];
   name: string;
   Users: GroupUserAndAdmin[];
 }
-
 
 export interface PostCreationResponse {
   title: string;
@@ -46,6 +47,3 @@ export interface PostCreationResponse {
 export interface UserPostResponse {
   posts: UserPost[];
 }
-
-
-

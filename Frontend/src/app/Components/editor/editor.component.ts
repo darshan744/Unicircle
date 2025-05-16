@@ -23,6 +23,7 @@ import { Select } from 'primeng/select';
 import { strIsEmpty } from '../../Utils/Util';
 import { ToastService } from '../../Service/ToastService/toast.service';
 import { PostService } from '../../Service/Post/post.service';
+import { Avatar } from 'primeng/avatar';
 
 @Component({
   selector: 'app-editor',
@@ -37,6 +38,7 @@ import { PostService } from '../../Service/Post/post.service';
     FloatLabel,
     TabsModule,
     Select,
+    Avatar
   ],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',

@@ -10,12 +10,10 @@
           placeholder="Select Group"
         >
           <ng-template let-group #item>
-            <div class="flex items-center">
-              <img
-                [src]="group.groupProfileImage"
-                class="mr-2"
-                style="width: 20px"
-                alt="NULL"
+            <div class="flex items-center gap-3">
+              <p-avatar
+              [image]="group.groupProfileImage??undefined"
+              [label]="group.groupProfileImage ? undefined : group.name.charAt(0)"
               />
               <span>{{ group.name }}</span>
             </div>

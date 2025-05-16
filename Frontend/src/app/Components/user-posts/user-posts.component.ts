@@ -7,10 +7,11 @@ import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
+import { Avatar } from 'primeng/avatar';
 
 @Component({
   selector: 'app-user-posts',
-  imports: [CommonModule , Button, Card],
+  imports: [CommonModule , Button, Card , Avatar],
   templateUrl: './user-posts.component.html',
   styleUrl: './user-posts.component.css',
 })
@@ -22,6 +23,5 @@ export class UserPostsComponent implements OnInit {
 
   ngOnInit(): void {
     this.posts = this.store.select("posts");
-    this.posts.subscribe(e => console.log(e))
   }
 }

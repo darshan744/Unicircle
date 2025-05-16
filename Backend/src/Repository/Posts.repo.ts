@@ -40,17 +40,36 @@ export const addImageLink = async (postId: string, links: string[]) => {
  * @description returns user's post
  */
 export const userPost = async (userId: string) => {
+    /**
+     *  title: string;
+        description: string;
+        id: string;
+        userId: string;
+        images: string[];
+        createdAt: Date;
+        updatedAt: Date;
+     */
     return await prisma.user.findFirst(
-        { 
-            where: { 
-                id: userId 
-            }, 
+        {
+            where: {
+                id: userId
+            },
             select: {
-                posts: true
-            } 
+                posts: {
+                    select: {
+                        title: true,
+                        description: true,
+                        id: true,
+                        images: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        group:true,
+                    }
+                },
+            }
         })
 }
-export const getAllPosts = async() => await prisma.post.findMany();
+export const getAllPosts = async () => await prisma.post.findMany();
 
 export const updatePost = () => { }
 

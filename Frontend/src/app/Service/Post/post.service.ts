@@ -3,8 +3,15 @@ import { ToastService } from '../ToastService/toast.service';
 import { UserService } from '../User/user.service';
 import environment from '../../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { PostCreationResponse, UserGroup, UserPostResponse } from '../../Types/User';
+import {
+  PostCreationResponse,
+  UserGroup,
+  UserPostResponse,
+} from '../../Types/User';
 import IBaseResponse from '../../Types/Response';
+import StoreType from '../../Store/Store';
+import { Store } from '@ngrx/store';
+import { initPost } from '../../Store/Post/Post.actions';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,7 +19,8 @@ export class PostService {
   constructor(
     private toast: ToastService,
     private user: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private store: Store<StoreType>
   ) {}
 
   createPost(
@@ -44,13 +52,12 @@ export class PostService {
           `Post created id : ${e.data.id} , title : ${e.data.title}`,
           'success'
         );
-        console.log(e.data)
+        this.store.dispatch(initPost());
       });
   }
 
   getUserPost() {
-    const url = `${environment.USER_POSTS}${this.user.userID}`
-    return this.http
-      .get<IBaseResponse<UserPostResponse>>(url)
+    const url = `${environment.USER_POSTS}${this.user.userID}`;
+    return this.http.get<IBaseResponse<UserPostResponse>>(url);
   }
 }

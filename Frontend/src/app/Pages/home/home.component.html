@@ -2,7 +2,7 @@
   <app-sidebar [userGroups]="userGroups$" />
   <div class="flex flex-col gap-2 w-full mt-10">
     @for (post of posts$ | async; track $index) {
-      <app-post [postInput]="post" />
+      <app-post-card [postInput]="post"  />
     }
   </div>
 </div>

@@ -60,7 +60,6 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
 }
 
 /**
- * 
  * @method GET
  * @route /api/posts/user/:userId
  * @description Returns the user's posts alone 

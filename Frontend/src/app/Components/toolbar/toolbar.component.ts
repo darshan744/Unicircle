@@ -41,13 +41,11 @@ import { UserGroup } from '../../Types/User';
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnInit {
-  userGroups$ : Observable<UserGroup[]> = new Observable()
   constructor(
     private userService: UserService,
     private router: Router,
     private store: Store<StoreType>
   ) {
-    this.userGroups$ = this.store.select("group");
     this.theme$ = this.store.select('theme');
   }
   theme$: Observable<boolean>;

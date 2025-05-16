@@ -1,0 +1,32 @@
+<p-card>
+  <div class="flex gap-3 items-center">
+    <p-avatar
+      [image]="group?.groupProfileImage ?? undefined"
+      [label]="group?.groupProfileImage
+              ? undefined :
+              group?.name?.charAt(0)
+              "
+    />
+    <h1 class="text-xl"> {{ group?.name }} </h1>
+    <p> {{ post?.updatedAt | date}} </p>
+  </div>
+  <div class="mt-3">
+    <h3> {{ post?.title }} </h3>
+    <div>
+      @if (images !== undefined && images.length > 0) {
+        <p-carousel [numVisible]="1" [value]="images">
+          <ng-template let-link #item>
+            <div class="flex justify-center">
+              <img [src]="link" />
+            </div>
+          </ng-template>
+        </p-carousel>
+      }
+    </div>
+  </div>
+  <div class="mt-3 flex gap-3">
+    <p-button [icon]="likeIcon" size="small" [severity]="likeButtonSeverity" (onClick)="likeAction()" />
+    <p-button icon="pi pi-comments" size="small" severity="contrast" />
+    <p-button icon="pi pi-share-alt" size="small" severity="info" />
+  </div>
+</p-card>

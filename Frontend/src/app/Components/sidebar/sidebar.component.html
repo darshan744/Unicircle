@@ -1,14 +1,18 @@
-<nav #nav class="fixed h-full border-r-1 border-r-gray-400">
+<nav #nav class="fixed h-full border-r-1 z-[4] border-r-gray-400">
   <p-drawer [appendTo]="nav" [visible]="isNavbarOpened()" [modal]="false">
     <div class="sticky">
       <div
+        [routerLink]="['home']"
+        routerLinkActive="bg-gray-100 dark:bg-gray-800"
         class="flex items-center gap-4 mt-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 cursor-default"
       >
-        <p-avatar icon="pi pi-home"  />
-        <span class="text-xl"> Home </span>
+        <p-avatar icon="pi pi-home"/>
+        <span class="text-xl" > Home </span>
       </div>
       @for(group of userGroups | async;track $index) {
       <div
+        [routerLink]="['group' , group.id]"
+        routerLinkActive="bg-gray-100 dark:bg-gray-800"
         class="flex items-center gap-4 mt-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 cursor-default"
       >
         @let profile = group.groupProfileImage;

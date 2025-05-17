@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { Login, SignUp } from "../Types/Auth";
 import { loginSchema, signUpSchema, } from "../Validators/Auth.validator";
 import {
@@ -12,14 +12,16 @@ import envs from "../Environments";
 import { comparePassword } from "../Util/Password";
 import { Exception } from "../Util/Exception";
 import { HttpStatusCode } from "../Util/HttpStatusCode";
-
-
-
+import { cookieOptions } from '../Util/HttpCookieOptions'
+/**
+ * @method POST
+ * @route /api/auth/login
+ * @description logs in the user and sets the token as cookie
+ */
 const login = async (req: Request, res: Response, next: NextFunction) => {
     const user: Login = req.body.user;
     const isUserValid = loginSchema.safeParse(user);
     if (isUserValid.error) {
-        const errorMessage = isUserValid.error.issues.map((issue) => issue.message);
         return next(new Exception(HttpStatusCode.BAD_REQUEST, "Invalid Body"));
     }
 
@@ -32,19 +34,32 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     if (!passValid) {
         return next(new Exception(HttpStatusCode.CONFLICT, "Invaild Credentials"));
     }
-    const token = jwt.sign(user, envs.secretKey, { expiresIn: "10s" });
-    const refreshToken = jwt.sign(user, envs.refreshKey, { expiresIn: "20s" });
+    const token = jwt.sign({ id: userdata.id }, envs.secretKey, { expiresIn: "15s" });
+    const refreshToken = jwt.sign({ id: userdata.id }, envs.refreshKey, { expiresIn: "2m" });
+    /**
+     * @note 
+     * In frontend when using set cookie header
+     * always use withCredential when sending a request even for login
+     * then only the cookie will be set in the browser
+     * then in middleware allow signup and login route to pass
+     */
     res
         .status(200)
-        .cookie("token", token, { httpOnly: true })
-        .cookie("refreshToken", refreshToken, { httpOnly: true })
+        // 15 minutes
+        .cookie("token", token, cookieOptions(60 * 15))
+        // 1 hr
+        .cookie("refreshToken", refreshToken, cookieOptions(60 * 60))
         .json({
             message: "Login Successfull",
             data: { user: userdata, token },
         });
 };
 
-
+/**
+ * @method POST
+ * @route /api/auth/signup
+ * @description Signsup a user
+ */
 const signup = async (req: Request, res: Response, next: NextFunction) => {
     const signUpUser: SignUp = req.body.user;
     const isSignUpBodyValid = signUpSchema.safeParse(signUpUser);
@@ -54,8 +69,6 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
             (issue) => issue.message
         );
         return next(new Exception(HttpStatusCode.NOT_FOUND, "Invalid Body"));
-        // res.status(400).json({ message: "Invalid Body", error: errorMessage });
-        // return;
     }
     //if user is not found true
     // if user if found false
@@ -69,7 +82,11 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     res.json({ message: "Sign-in Successfull You can login now " });
     return;
 };
-
+/**
+ * @method GET
+ * @route /api/username 
+ * @description Checks whether the user enteres user name is available or not 
+ */
 const userNameAvailable = async (
     req: Request,
     res: Response,
@@ -83,5 +100,26 @@ const userNameAvailable = async (
         data: { userExist: userExist ? true : false },
     });
 };
-const refreshToken = (req: Request, res: Response) => { }
+
+/**
+ * @method GET
+ * @router /api/auth/refresh-token
+ * @description Used for refreshing the token
+ */
+const refreshToken = (req: Request, res: Response, next: NextFunction) => {
+    const { refreshToken } = req.cookies;
+    if (!refreshToken) {
+        next(new Exception(HttpStatusCode.UNAUTHORIZED, "Ref token not found"))
+    }
+    try {
+        const refreshTokenDecoded = jwt.verify(refreshToken, envs.refreshKey);
+        const newToken = jwt.sign(refreshTokenDecoded, envs.secretKey)
+        // fifteen minutes
+        res.status(200).cookie("token", newToken, cookieOptions(60 * 15)).json();
+    } catch (error) {
+        next(new Exception(HttpStatusCode.UNAUTHORIZED, "Refresh token expired"));
+        return;
+    }
+
+}
 export { login, signup, refreshToken, userNameAvailable };

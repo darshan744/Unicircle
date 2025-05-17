@@ -43,7 +43,7 @@ export class UserService {
     const Url = `${envs.USER_URL}${this.userID}/profile`;
     console.log(Url);
     this.http
-      .post<IBaseResponse<ProfileResponse>>(Url, formData)
+      .post<IBaseResponse<ProfileResponse>>(Url, formData , {withCredentials :true})
       .subscribe((res) => {
         if (res.data.url) {
           const user: LoginUser = this.user;
@@ -67,7 +67,7 @@ export class UserService {
     const url = envs.GROUPNAME_CHECK_URL;
     const queryParams = new HttpParams().append('groupName', groupName);
     return this.http.get<IBaseResponse<{ available: boolean }>>(url, {
-      params: queryParams,
+      params: queryParams,withCredentials : true
     });
   }
   createGroup(groupName: string, profileImage: File | null) {
@@ -84,7 +84,7 @@ export class UserService {
     formData.append('groupName', groupName);
     this.http
       .post<IBaseResponse<GroupCreationResponse>>(envs.GROUP_CREATE, formData, {
-        params,
+        params,withCredentials : true
       })
       .subscribe((res) => {
         this.toastService.showToast(
@@ -100,7 +100,7 @@ export class UserService {
   getUserGroups() {
     const url = `${envs.SINGLEUSER_GROUPS_URL}${this.userID}`;
     return this.http
-      .get<IBaseResponse<UserGroup[]>>(url)
+      .get<IBaseResponse<UserGroup[]>>(url , {withCredentials : true})
       .pipe(map((val) => val.data));
   }
   // logout

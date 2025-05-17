@@ -44,7 +44,7 @@ export class PostService {
       .post<IBaseResponse<PostCreationResponse>>(
         environment.CREATE_POST,
         formData,
-        { params }
+        { params , withCredentials : true}
       )
       .subscribe((e) => {
         this.toast.showToast(
@@ -58,6 +58,6 @@ export class PostService {
 
   getUserPost() {
     const url = `${environment.USER_POSTS}${this.user.userID}`;
-    return this.http.get<IBaseResponse<UserPostResponse>>(url);
+    return this.http.get<IBaseResponse<UserPostResponse>>(url , {withCredentials :true});
   }
 }

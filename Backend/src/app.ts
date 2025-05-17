@@ -9,6 +9,7 @@ import errorHandler from "./Middlewares/ErrorHandler";
 import GroupRoutes from "./Routes/Groups.routes";
 import AdminRoutes from './Routes/Admin.routes'
 import PostRoutes from './Routes/Post.routes'
+import AuthMiddleware from "./Middlewares/Auth";
 const app = express();
 app.use(express.json());
 app.use(
@@ -17,9 +18,9 @@ app.use(
         credentials: true,
     })
 );
-app.use(Logger);
 app.use(cookieParser());
-
+app.use(Logger);
+app.use(AuthMiddleware)
 app.get("/" , (_ , res)=> {
     res.send("Server is running successfully")
 })
@@ -30,6 +31,7 @@ app.get("/api/username", userNameAvailable);
 app.use("/api/groups",GroupRoutes)
 app.use("/api/admin", AdminRoutes )
 app.use("/api/posts", PostRoutes)
+
 //MUST BE LAST
 app.use(errorHandler)
 

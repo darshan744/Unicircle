@@ -42,6 +42,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Pages/post/post.component').then((c) => c.PostComponent),
       },
+      {
+        path: 'group/:groupId',
+        loadComponent: () =>
+          import('./Pages/group/group.component').then((c) => c.GroupComponent),
+      },
     ],
   },
 ];

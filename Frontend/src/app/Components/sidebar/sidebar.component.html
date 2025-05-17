@@ -1,7 +1,16 @@
-<div class="flex flex-col gap-2 ml-3 mb-3 pr-2 h-screen ">
-  <div class="m-4">
-    <div *ngFor="let group of userGroups | async">
-      <div class="flex items-center gap-2 mt-4">
+<nav #nav class="fixed h-full border-r-1 border-r-gray-400">
+  <p-drawer [appendTo]="nav" [visible]="isNavbarOpened()" [modal]="false">
+    <div class="sticky">
+      <div
+        class="flex items-center gap-4 mt-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 cursor-default"
+      >
+        <p-avatar icon="pi pi-home"  />
+        <span class="text-xl"> Home </span>
+      </div>
+      @for(group of userGroups | async;track $index) {
+      <div
+        class="flex items-center gap-4 mt-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 cursor-default"
+      >
         @let profile = group.groupProfileImage;
         <p-avatar
           [image]="profile ?? undefined"
@@ -9,6 +18,7 @@
         />
         <span class="text-xl"> {{ group.name }} </span>
       </div>
+      }
     </div>
-  </div>
-</div>
+  </p-drawer>
+</nav>

@@ -9,7 +9,7 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'user/:id',
+    path: 'user',
     component: MainComponent,
     children: [
       {
@@ -17,7 +17,7 @@ export const routes: Routes = [
         component: HomeComponent,
       },
       {
-        path: 'profile',
+        path: 'profile/:id',
         loadComponent: () =>
           import('./Pages/profile/profile.component').then(
             (comp) => comp.ProfileComponent
@@ -32,7 +32,15 @@ export const routes: Routes = [
       },
       {
         path: 'create',
-        loadComponent : () => import("./Pages/create-post/create-post.component").then( c => c.CreatePostComponent)
+        loadComponent: () =>
+          import('./Pages/create-post/create-post.component').then(
+            (c) => c.CreatePostComponent
+          ),
+      },
+      {
+        path: 'posts/:postId',
+        loadComponent: () =>
+          import('./Pages/post/post.component').then((c) => c.PostComponent),
       },
     ],
   },

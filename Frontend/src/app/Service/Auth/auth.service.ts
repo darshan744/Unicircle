@@ -17,9 +17,10 @@ export class AuthService {
     const sub = this.http.post<IBaseResponse<LoginReponse>>(environment.LOGIN_URL, {user:data});
     sub.subscribe({
       next:(res)=>{
-        this.toastSerivce.showToast("Success" , res.message , "success");
-        this.router.navigate(['user' , res.data.user.id , 'home'])
-        localStorage.setItem("user" , JSON.stringify(res.data.user))
+        this.toastSerivce.showToast('Success', res.message, 'success');
+        // res.data.user.id
+        this.router.navigate(['user', 'home']);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
       }
     })
   }

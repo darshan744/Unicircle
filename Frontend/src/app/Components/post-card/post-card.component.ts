@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Avatar } from 'primeng/avatar';
@@ -7,6 +7,7 @@ import { Button } from 'primeng/button';
 import { Carousel } from 'primeng/carousel';
 
 import { UserPost } from '../../Types/User';
+import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 @Component({
   selector: 'app-post-card',
   imports: [Avatar, Card, Button, Carousel, CommonModule],
@@ -14,6 +15,8 @@ import { UserPost } from '../../Types/User';
   styleUrl: './post-card.component.css',
 })
 export class PostCardComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   postInput = input<UserPost>();
   //for red color
   likeButtonSeverity: 'secondary' | 'danger' = 'secondary';
@@ -45,5 +48,16 @@ export class PostCardComponent {
       this.likeIcon === 'pi pi-heart' ? 'pi pi-heart-fill' : 'pi pi-heart';
     this.likeButtonSeverity =
       this.likeButtonSeverity === 'secondary' ? 'danger' : 'secondary';
+  }
+  /**
+   * @description Navigates to sibling route post/:id
+   * @note To navigate to sibling must use current route's parent property since current is a
+   * children . Hence by getting the parent relative to that is the sibling(i.e post)
+   */
+  comment(): void {
+    this.router.navigate(['posts', this.post?.id], {
+      relativeTo: this.route.parent,
+      queryParams : {comment : true}
+    });
   }
 }

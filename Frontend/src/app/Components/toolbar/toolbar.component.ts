@@ -2,6 +2,7 @@ import {
   Component,
   model,
   OnInit,
+  output,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -37,10 +38,14 @@ import { UserGroup } from '../../Types/User';
     MenuModule,
     RouterLink,
     FormsModule,
+
   ],
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnInit {
+
+  navBarOutputSignal = output<boolean>();
+  isNavBarOpened : boolean = false;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -50,24 +55,34 @@ export class ToolbarComponent implements OnInit {
   }
   theme$: Observable<boolean>;
   themeSignal = model(false);
+
+  get userId () :string {
+   return this.userService.userID
+  }
+
   ngOnInit(): void {
     if (localStorage['theme'] === 'dark') {
       this.themeSignal.set(true);
     } else {
       this.themeSignal.set(false);
     }
+    this.openNavBar()
   }
   toggleTheme(event: boolean) {
     const html = document.querySelector('html');
     this.store.dispatch(toggle({ darkMode: event }));
   }
 
+  openNavBar () : void {
+    this.isNavBarOpened = !this.isNavBarOpened
+    this.navBarOutputSignal.emit(this.isNavBarOpened);
+  }
   logout() {
     this.userService.logout();
   }
 
   navigateToHome() {
-    this.router.navigate(['user', this.userService.userID, 'home']);
+    this.router.navigate(['user', 'home']);
   }
 
   navigateCreate() {

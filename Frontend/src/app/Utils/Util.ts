@@ -17,16 +17,14 @@ export function strIsEmpty(str: string): boolean {
   return false;
 }
 /**
- * @param signal Signal of Type T
- * @param delayTime debouncing Time : number
+ * @param signal Signal of Type `T`
+ * @param delayTime debouncing Time : `number`
  * @param initialValue Type of the value
  * @returns A signal
  * @description Converts the passed signal to a debounced signal for query searching
  */
 export function convertSignalToDebouncedSignal<T>( signal : Signal<T> , delayTime : number , initialValue : T ) {
   const signalObservable = toObservable(signal).pipe(debounceTime(delayTime));
-
   const convertedSignal = toSignal(signalObservable , {initialValue : initialValue});
-
   return convertedSignal;
 }

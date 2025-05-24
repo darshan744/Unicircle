@@ -49,3 +49,4 @@ Backend/postgres-data
 Backend/prisma/migrations/
 /Frontend/src/environments/environment.development.ts
 /Frontend/src/environments/environment.ts
+Backend/docker-compose.yaml

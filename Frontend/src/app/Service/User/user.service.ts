@@ -18,6 +18,9 @@ import { initGroup } from '../../Store/Groups/Group.actions';
   providedIn: 'root',
 })
 export class UserService {
+  apiUrl = envs.api
+  userUrl = envs.api + "/users"
+  groupUrl = envs.api + "/groups"
   constructor(
     private http: HttpClient,
     private toastService: ToastService,
@@ -38,12 +41,11 @@ export class UserService {
   }
   //upload profile image
   uploadProfileImage(image: File) {
+    const url = `${this.userUrl}/${this.userID}/profile`
     const formData = new FormData();
     formData.append('profileImage', image);
-    const Url = `${envs.USER_URL}${this.userID}/profile`;
-    console.log(Url);
     this.http
-      .post<IBaseResponse<ProfileResponse>>(Url, formData , {withCredentials :true})
+      .post<IBaseResponse<ProfileResponse>>(url, formData , {withCredentials :true})
       .subscribe((res) => {
         if (res.data.url) {
           const user: LoginUser = this.user;
@@ -57,14 +59,14 @@ export class UserService {
   }
   // delete profile image
   deleteProfileImage() {
-    const Url = `${envs.USER_URL}${this.userID}/profile`;
-    this.http.delete(Url).subscribe((e: any) => {
+    const url = `${this.userUrl}/${this.userID}/profile`
+    this.http.delete(url).subscribe((e: any) => {
       this.toastService.showToast('Success', e.message, 'success');
     });
   }
   // group name checking
   checkGroupName(groupName: string) {
-    const url = envs.GROUPNAME_CHECK_URL;
+    const url = this.groupUrl + "/checkGroupName"
     const queryParams = new HttpParams().append('groupName', groupName);
     return this.http.get<IBaseResponse<{ available: boolean }>>(url, {
       params: queryParams,withCredentials : true
@@ -80,10 +82,11 @@ export class UserService {
     // i.e for upload.single("profileImage")
     // it will parse that and be accessable with req.file
     // and the rest as req.body
+    const url = this.groupUrl + "/"
     const params = new HttpParams().append('id', this.userID);
     formData.append('groupName', groupName);
     this.http
-      .post<IBaseResponse<GroupCreationResponse>>(envs.GROUP_CREATE, formData, {
+      .post<IBaseResponse<GroupCreationResponse>>(url, formData, {
         params,withCredentials : true
       })
       .subscribe((res) => {
@@ -98,7 +101,7 @@ export class UserService {
   }
   // get user groups
   getUserGroups() {
-    const url = `${envs.SINGLEUSER_GROUPS_URL}${this.userID}`;
+    const url = `${this.groupUrl}/${this.userID}`
     return this.http
       .get<IBaseResponse<UserGroup[]>>(url , {withCredentials : true})
       .pipe(map((val) => val.data));

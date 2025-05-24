@@ -9,22 +9,22 @@ import { Router } from '@angular/router';
 import StoreType from '../../Store/Store';
 import { Store } from '@ngrx/store';
 import { setUser } from '../../Store/User/User.actions';
-import { initGroup } from '../../Store/Groups/Group.actions';
-import { initPost } from '../../Store/Post/Post.actions';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  authUrl = environment.api
   constructor(
     private http: HttpClient,
     private toastSerivce: ToastService,
     private router: Router,
     private store: Store<StoreType>
   ) {}
-  
+
   login(data: ILogin) {
+    const loginUrl = this.authUrl + "/auth/login"
     const sub = this.http.post<IBaseResponse<LoginReponse>>(
-      environment.LOGIN_URL,
+      loginUrl,
       { user: data  } , {withCredentials : true}
     );
     sub.subscribe({
@@ -37,8 +37,9 @@ export class AuthService {
     });
   }
   signup(data: ISignup) {
+    const signupUrl = this.authUrl + "/auth/signup"
     this.http
-      .post<IBaseResponse<undefined>>(environment.SIGNUP_URL, { user: data })
+      .post<IBaseResponse<undefined>>(signupUrl, { user: data })
       .subscribe({
         next: (res) => {
           this.toastSerivce.showToast('Success', res.message, 'success');
@@ -48,10 +49,12 @@ export class AuthService {
   }
 
   checkUserName(userName: string) {
+
+    const checkUserNameUrl = this.authUrl + "/checkUserName"
     const httpParams = new HttpParams().append('userName', userName);
     const observable: Observable<IBaseResponse<UserNameCheck>> = this.http.get<
       IBaseResponse<UserNameCheck>
-    >(environment.USERNAME_URL, { params: httpParams });
+    >(checkUserNameUrl, { params: httpParams });
     return observable;
   }
 }

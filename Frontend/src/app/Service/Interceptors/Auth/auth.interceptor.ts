@@ -25,11 +25,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (number === 401) {
         // if refresh token responds 401 pass to next interceptor
         // then the catchError in token observable logsout user
-        if (req.url === environment.REFRESH_TOKEN) {
+        const refreshUrl = `${environment.api}/auth/refresh-token`
+        if (req.url === refreshUrl) {
           return next(req);
         }
         return http
-          .get(environment.REFRESH_TOKEN, { withCredentials: true })
+          .get(refreshUrl, { withCredentials: true })
           .pipe(
             //after getting we pass it to the next handler
             switchMap(() => next(req)),

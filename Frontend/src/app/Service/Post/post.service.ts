@@ -16,6 +16,7 @@ import { initPost } from '../../Store/Post/Post.actions';
   providedIn: 'root',
 })
 export class PostService {
+   postUrl = environment.api + "/posts"
   constructor(
     private toast: ToastService,
     private user: UserService,
@@ -42,7 +43,7 @@ export class PostService {
     const params = new HttpParams().append('id', this.user.userID);
     this.http
       .post<IBaseResponse<PostCreationResponse>>(
-        environment.CREATE_POST,
+        this.postUrl,
         formData,
         { params , withCredentials : true}
       )
@@ -57,7 +58,7 @@ export class PostService {
   }
 
   getUserPost() {
-    const url = `${environment.USER_POSTS}${this.user.userID}`;
+    const url = `${this.postUrl}/user/${this.user.userID}`;
     return this.http.get<IBaseResponse<UserPostResponse>>(url , {withCredentials :true});
   }
 }

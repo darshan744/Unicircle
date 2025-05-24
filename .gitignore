@@ -31,9 +31,9 @@
 Thumbs.db
 
 # Angular build output
-/frontend/dist/
-/frontend/.angular/cache/
-/frontend/.angular/config.json
+/Frontend/dist/
+/Frontend/.angular/cache/
+/Frontend/.angular/config.json
 
 # Backend build (if using TS or compiled files)
 **/dist/

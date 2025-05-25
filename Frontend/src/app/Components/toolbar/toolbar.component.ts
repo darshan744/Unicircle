@@ -3,10 +3,8 @@ import {
   model,
   OnInit,
   output,
-  signal,
-  WritableSignal,
 } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -20,10 +18,8 @@ import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../Service/User/user.service';
 import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
-import { Observable } from 'rxjs';
+import { Observable, window } from 'rxjs';
 import { toggle } from '../../Store/Theme/Theme.actions';
-import { Select } from 'primeng/select';
-import { UserGroup } from '../../Types/User';
 @Component({
   selector: 'app-toolbar',
   imports: [
@@ -49,7 +45,8 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private store: Store<StoreType>
+    private store: Store<StoreType>,
+    private activatedRoute : ActivatedRoute
   ) {
     this.theme$ = this.store.select('theme');
   }
@@ -86,6 +83,9 @@ export class ToolbarComponent implements OnInit {
   }
 
   navigateCreate() {
-    this.router.navigate(['user', this.userService.userID, 'create']);
+    this.router.navigate([ 'create'] , {relativeTo : this.activatedRoute });
+  }
+  navigateProfile() {
+    this.router.navigate(['profile' , this.userService.userID], { relativeTo : this.activatedRoute })
   }
 }

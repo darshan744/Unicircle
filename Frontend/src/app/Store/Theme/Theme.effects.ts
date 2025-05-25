@@ -15,7 +15,6 @@ export class ToggleEffects {
         tap((action) => {
           const html = document.querySelector('html');
           html?.classList.toggle('dark', action.darkMode);
-          console.log('darkMode', action.darkMode);
           localStorage.setItem('theme', action.darkMode ? 'dark' : 'light');
         })
       ),

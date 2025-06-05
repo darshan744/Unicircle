@@ -4,6 +4,7 @@ import { UserService } from '../User/user.service';
 import environment from '../../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {
+  GroupPostsResponse,
   PostCreationResponse,
   UserGroup,
   UserPostResponse,
@@ -16,13 +17,13 @@ import { initPost } from '../../Store/Post/Post.actions';
   providedIn: 'root',
 })
 export class PostService {
-   postUrl = environment.api + "/posts"
+  postUrl = environment.api + "/posts"
   constructor(
     private toast: ToastService,
     private user: UserService,
     private http: HttpClient,
     private store: Store<StoreType>
-  ) {}
+  ) { }
 
   createPost(
     post: {
@@ -45,7 +46,7 @@ export class PostService {
       .post<IBaseResponse<PostCreationResponse>>(
         this.postUrl,
         formData,
-        { params , withCredentials : true}
+        { params, withCredentials: true }
       )
       .subscribe((e) => {
         this.toast.showToast(
@@ -59,6 +60,11 @@ export class PostService {
 
   getUserPost() {
     const url = `${this.postUrl}/user/${this.user.userID}`;
-    return this.http.get<IBaseResponse<UserPostResponse>>(url , {withCredentials :true});
+    return this.http.get<IBaseResponse<UserPostResponse>>(url, { withCredentials: true });
   }
+  getGroupPosts(groupId: string) {
+    const url = `${this.postUrl}/group/${groupId}`
+    return this.http.get<IBaseResponse<GroupPostsResponse[]>>(url, { withCredentials: true })
+  }
+
 }

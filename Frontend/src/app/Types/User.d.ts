@@ -10,19 +10,21 @@ interface GroupUserAndAdmin {
   name: string;
   userName: string;
 }
+interface BasePost {
+  title: string,
+  descript: string,
+  images: string[]
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-export interface UserPost {
-  title: string;
-  description: string;
+export interface UserPost extends BasePost {
   group: {
     id: string;
     name: string;
     groupProfileImage: string | null;
   };
   id: string;
-  images: string[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface UserGroup {
@@ -46,4 +48,9 @@ export interface PostCreationResponse {
 
 export interface UserPostResponse {
   posts: UserPost[];
+}
+export interface GroupPostsResponse extends BasePost {
+  id: string;
+  userId: string;
+  groupsId: string;
 }

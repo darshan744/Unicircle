@@ -33,6 +33,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return http
           .get(refreshUrl, { withCredentials: true })
           .pipe(
+            /**
+             * @note note on switchmap
+             * As the name implies it switches to a new observable and maps it as a subscribed value
+             * In this case we are actually getting a 401 response and the getting refreshtoken in here
+             * But we want the user to have the failed requests' response (with data) so then we again recall the next()
+             * to re-run the request cycle which then calls backend and then we get a response this response is set as the
+             * observable value using switchmap -> switch it and map it
+             * */
             //after getting we pass it to the next handler
             switchMap(() => next(req)),
             // incase if the refreshtoken itself gives an error

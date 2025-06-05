@@ -1,2 +1,15 @@
-<p>group works!</p>
-<p> {{ (router.paramMap | async)?.get("groupId")  }} </p>
+@let group = group$ | async ;
+<div class="mt-10 mr-10 ml-10">
+  <div class="flex justify-between">
+    <div class="flex gap-3 items-center">
+      <p-avatar [image]="group?.groupProfileImage"
+        [label]="group && group.groupProfileImage === null ? group?.name?.charAt(0) : undefined" shape="circle" />
+      <h2> {{group?.name}} </h2>
+    </div>
+    <!-- <div  class="flex gap-3"> TODO ABILITY TO FIND MULTIPE GROUPS AND JOIN -->
+    <!--   <p-button severity="info" outlined="true" size="small">Create Post</p-button> -->
+    <!--   <p-button severity="info" size="small" label="Join"></p-button> -->
+    <!-- </div> -->
+  </div>
+  <div *ngFor="let post of posts$ | async"> <app-post-card [postInput]="post"></app-post-card> </div>
+</div>

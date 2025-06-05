@@ -6,7 +6,7 @@ import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { Carousel } from 'primeng/carousel';
 
-import { UserPost } from '../../Types/User';
+import { GroupPostsResponse, UserPost } from '../../Types/User';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 @Component({
   selector: 'app-post-card',
@@ -17,7 +17,7 @@ import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 export class PostCardComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  postInput = input<UserPost>();
+  postInput = input<UserPost | GroupPostsResponse>();
   //for red color
   likeButtonSeverity: 'secondary' | 'danger' = 'secondary';
   // when liked the icon becomes filled
@@ -25,20 +25,23 @@ export class PostCardComponent {
   /**
    * @returns value of the signal
    */
-  get post(): UserPost | undefined {
+  get post(): UserPost | GroupPostsResponse | undefined {
     return this.postInput();
   }
   /**
    * @returns value of the post
    */
   get group(): UserPost['group'] | undefined {
-    return this.post?.group;
+    return this.post && 'group' in this.post ? this.post.group : undefined;
   }
   /**
    * images link
    */
   get images(): string[] | undefined {
     return this.post?.images ? this.post.images : undefined;
+  }
+  isUserPost(post: UserPost | GroupPostsResponse | undefined): post is UserPost {
+    return (post as UserPost).group !== undefined
   }
   /**
    * @description When liked will convert to a
@@ -57,7 +60,7 @@ export class PostCardComponent {
   comment(): void {
     this.router.navigate(['posts', this.post?.id], {
       relativeTo: this.route.parent,
-      queryParams : {comment : true}
+      queryParams: { comment: true }
     });
   }
 }

@@ -7,6 +7,7 @@ import { LoginUser } from '../../Types/Auth';
 import { Router } from '@angular/router';
 import {
   GroupCreationResponse,
+  GroupPostsResponse,
   ProfileResponse,
   UserGroup,
 } from '../../Types/User';
@@ -26,7 +27,7 @@ export class UserService {
     private toastService: ToastService,
     private router: Router,
     private store: Store<StoreType>
-  ) {}
+  ) { }
 
   // userid
   get userID() {
@@ -45,7 +46,7 @@ export class UserService {
     const formData = new FormData();
     formData.append('profileImage', image);
     this.http
-      .post<IBaseResponse<ProfileResponse>>(url, formData , {withCredentials :true})
+      .post<IBaseResponse<ProfileResponse>>(url, formData, { withCredentials: true })
       .subscribe((res) => {
         if (res.data.url) {
           const user: LoginUser = this.user;
@@ -69,7 +70,7 @@ export class UserService {
     const url = this.groupUrl + "/checkGroupName"
     const queryParams = new HttpParams().append('groupName', groupName);
     return this.http.get<IBaseResponse<{ available: boolean }>>(url, {
-      params: queryParams,withCredentials : true
+      params: queryParams, withCredentials: true
     });
   }
   createGroup(groupName: string, profileImage: File | null) {
@@ -79,6 +80,8 @@ export class UserService {
     }
     // we can send custom object in the formdata format itself
     // in multer we can configure to parse only the file that is appended based on the name
+    //
+    //
     // i.e for upload.single("profileImage")
     // it will parse that and be accessable with req.file
     // and the rest as req.body
@@ -87,7 +90,7 @@ export class UserService {
     formData.append('groupName', groupName);
     this.http
       .post<IBaseResponse<GroupCreationResponse>>(url, formData, {
-        params,withCredentials : true
+        params, withCredentials: true
       })
       .subscribe((res) => {
         this.toastService.showToast(
@@ -103,7 +106,7 @@ export class UserService {
   getUserGroups() {
     const url = `${this.groupUrl}/${this.userID}`
     return this.http
-      .get<IBaseResponse<UserGroup[]>>(url , {withCredentials : true})
+      .get<IBaseResponse<UserGroup[]>>(url, { withCredentials: true })
       .pipe(map((val) => val.data));
   }
   // logout

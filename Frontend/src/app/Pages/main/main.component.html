@@ -1,9 +1,10 @@
-<app-toolbar (navBarOutputSignal)="openNavHandler($event)"/>
+<app-toolbar (navBarOutputSignal)="openNavHandler($event)" />
 <div class="grid grid-cols-4 gap-4">
   <div class="col-span-1">
     <app-sidebar [isNavbarOpened]="isNavBarOpenedSignal()" [userGroups]="groups$" />
   </div>
-  <div class="mr-10" [ngClass]="{ 'col-span-3 mt-5' : isNavBarOpenedSignal() , 'col-span-4 ml-10 ' : !isNavBarOpenedSignal() }">
+  <div class="mr-10"
+    [ngClass]="{ 'col-span-3 mt-5' : isNavBarOpenedSignal() , 'col-span-4 ml-10 ' : !isNavBarOpenedSignal() }">
     <router-outlet />
   </div>
 </div>

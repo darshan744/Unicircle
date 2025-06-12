@@ -12,7 +12,7 @@ interface GroupUserAndAdmin {
 }
 interface BasePost {
   title: string,
-  descript: string,
+  description: string,
   images: string[]
   createdAt: Date;
   updatedAt: Date;
@@ -53,4 +53,8 @@ export interface GroupPostsResponse extends BasePost {
   id: string;
   userId: string;
   groupsId: string;
+  User: {
+    userName: string;
+    profileImage: string | null
+  };
 }

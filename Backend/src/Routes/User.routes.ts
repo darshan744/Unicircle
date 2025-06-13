@@ -1,6 +1,6 @@
 import Router from 'express'
 import { deleteAllUser } from '../Controllers/Users.controller';
-import {upload} from '../Cloudinary/CloudinaryConfig'
+import { upload } from '../Options/CloudinaryConfig'
 import * as ProfileController from '../Controllers/Profile.controller';
 const router = Router();
 
@@ -13,9 +13,9 @@ router
   .delete(ProfileController.deleteProfile)
   .get(ProfileController.getProfile);
 
-router.post("/images" , upload.array("files") , (req , res)=>{
+router.post("/images", upload.array("files"), (req, res) => {
   const files = req.files;
-  res.json({files})
+  res.json({ files })
 })
 
 

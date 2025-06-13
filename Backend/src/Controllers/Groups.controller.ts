@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import * as GroupRepo from '../Repository/Groups.repo'
 import { Exception } from '../Util/Exception';
 import { HttpStatusCode } from '../Util/HttpStatusCode';
-import { cloudinary } from '../Cloudinary/CloudinaryConfig';
+import { cloudinary } from '../Options/CloudinaryConfig';
 
 /**
  * @method GET
@@ -29,22 +29,22 @@ export const createGroup = async (req: Request, res: Response, next: NextFunctio
     // at creation the group image is optional may be undefined
     const imageFile = req.file;
     const groupName: string = req.body.groupName;
-    if(!groupName) {
-        return next(new Exception(HttpStatusCode.BAD_REQUEST , "Group Name not found"));
+    if (!groupName) {
+        return next(new Exception(HttpStatusCode.BAD_REQUEST, "Group Name not found"));
     }
     const isFoundInDB = await GroupRepo.checkGroupNameAvailable(groupName);
-    if (isFoundInDB){
-        return next(new Exception(HttpStatusCode.CONFLICT , "Group Name already Exist"))
+    if (isFoundInDB) {
+        return next(new Exception(HttpStatusCode.CONFLICT, "Group Name already Exist"))
     }
     const adminId = req.query.id;
-    if(!adminId) {
+    if (!adminId) {
         return next(new Exception(HttpStatusCode.BAD_REQUEST, "Id not found"))
     }
-    const groupDB = await GroupRepo.createGroupRepo(groupName , String(adminId));
+    const groupDB = await GroupRepo.createGroupRepo(groupName, String(adminId));
     // if profile image is uploaded upload that image
     if (imageFile) {
         const result = cloudinary.uploader.upload_stream(
-            { folder: "groupProfileImage", public_id: `GroupImage_${groupDB.id}`, overwrite:true},
+            { folder: "groupProfileImage", public_id: `GroupImage_${groupDB.id}`, overwrite: true },
             async (err, cloudinaryResult) => {
                 if (err) {
                     return next(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, err.message))
@@ -59,7 +59,7 @@ export const createGroup = async (req: Request, res: Response, next: NextFunctio
         ).end(imageFile.buffer)
     }
     else {
-        res.status(200).json({ message: "Group Created", data: groupDB })   
+        res.status(200).json({ message: "Group Created", data: groupDB })
     }
 }
 
@@ -70,13 +70,13 @@ export const createGroup = async (req: Request, res: Response, next: NextFunctio
  */
 export const userGroups = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.userId;
-    if(!id) {
-        return next(new Exception(HttpStatusCode.BAD_REQUEST , "Id not found"))
+    if (!id) {
+        return next(new Exception(HttpStatusCode.BAD_REQUEST, "Id not found"))
     }
     const groups = await GroupRepo.userGroups(String(id));
-    if(!groups) {
-        return next(new Exception(HttpStatusCode.NOT_FOUND , "No groups found"));
+    if (!groups) {
+        return next(new Exception(HttpStatusCode.NOT_FOUND, "No groups found"));
     }
-    res.status(200).json({message : "Groups found" , data : groups});  
+    res.status(200).json({ message: "Groups found", data: groups });
 }
 

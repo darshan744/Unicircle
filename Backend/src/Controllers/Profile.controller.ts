@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { cloudinary } from "../Cloudinary/CloudinaryConfig";
+import { cloudinary } from "../Options/CloudinaryConfig";
 import { Exception } from "../Util/Exception";
 import { HttpStatusCode } from "../Util/HttpStatusCode";
 import { updateProfile, deleteProfile as UserDeleteProfile } from "../Repository/Users.repo";

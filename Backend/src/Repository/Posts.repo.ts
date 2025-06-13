@@ -63,7 +63,7 @@ export const userPost = async (userId: string) => {
                         images: true,
                         createdAt: true,
                         updatedAt: true,
-                        group:true,
+                        group: true,
                     }
                 },
             }
@@ -74,3 +74,32 @@ export const getAllPosts = async () => await prisma.post.findMany();
 export const updatePost = () => { }
 
 export const deletePost = () => { }
+
+export const groupPost = async (groupId: string) => {
+    return await prisma.post.findMany({
+        where: {
+            groupsId: groupId
+        },
+        include: {
+            User: {
+                select: {
+                    userName: true,
+                    profileImage: true,
+                }
+
+            }
+        }
+    })
+}
+/**
+ *  title: string;
+    description: string;
+    id: string;
+    userId: string;
+    images: string[];
+    createdAt: Date;
+    updatedAt: Date;
+    groupsId: string;
+
+ *  
+ * */

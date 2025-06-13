@@ -3,8 +3,9 @@ import { Post } from '../Types/Frontend';
 import { post } from '../Validators/Validator'
 import { Exception } from '../Util/Exception';
 import { HttpStatusCode } from '../Util/HttpStatusCode';
-import { cloudinary } from '../Cloudinary/CloudinaryConfig'
+import { cloudinary } from '../Options/CloudinaryConfig'
 import * as PostRepo from '../Repository/Posts.repo'
+import { ApiResponse } from '../Util/ApiResponse';
 
 /**
  * @method POST
@@ -47,18 +48,19 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
         )
         try {
             const imageUrls = await Promise.all(uploadPromises);
-            const respoResult = await PostRepo.addImageLink(postResult.id, imageUrls);
-            res.json({ message: "Successfully created", data: respoResult })
+            const repoResult = await PostRepo.addImageLink(postResult.id, imageUrls);
+            const response: ApiResponse<typeof repoResult> = new ApiResponse("Successfully created", repoResult)
+            res.json(response)
         } catch (error: any) {
             next(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, error.message))
         }
     }
     else {
-        res.json({ message: "Successfully created", data: postResult })
+        const response: ApiResponse<typeof postResult> = new ApiResponse("Successfully created", postResult);
+        res.json(response)
     }
-    
-}
 
+}
 /**
  * @method GET
  * @route /api/posts/user/:userId
@@ -67,5 +69,22 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
 export const getUserPost = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
     const posts = await PostRepo.userPost(String(id));
-    res.json({message : "Posts" , data : posts})
+    const response: ApiResponse<typeof posts> = new ApiResponse("Posts", posts)
+    res.json(response)
+}
+/** 
+ * @method GET
+ * @route /api/groups/:groupId
+ * @description Returns the posts of the GroupId not managing the state but only as a one time value
+ * */
+export const getGroupPost = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.groupId;
+    console.log(id)
+    try {
+        const groupPosts = await PostRepo.groupPost(id);
+        const response: ApiResponse<typeof groupPosts> = new ApiResponse("Group Posts", groupPosts)
+        res.json(response);
+    } catch (err: any) {
+        next(new Exception(HttpStatusCode.INTERNAL_SERVER_ERROR, err.message))
+    }
 }

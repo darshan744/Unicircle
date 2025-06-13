@@ -116,8 +116,8 @@ const refreshToken = (req: Request, res: Response, next: NextFunction) => {
         const newToken = jwt.sign(refreshTokenDecoded, envs.secretKey)
         // fifteen minutes
         res.status(200).cookie("token", newToken, cookieOptions(60 * 15)).json();
-    } catch (error) {
-        next(new Exception(HttpStatusCode.UNAUTHORIZED, "Refresh token expired"));
+    } catch (error: any) {
+        next(new Exception(HttpStatusCode.UNAUTHORIZED, error.message));
         return;
     }
 

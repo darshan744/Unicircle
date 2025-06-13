@@ -1,9 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
-import { QuillModule } from 'ngx-quill';
 
 import {
   FileRemoveEvent,
@@ -24,7 +22,6 @@ import { strIsEmpty } from '../../Utils/Util';
 import { ToastService } from '../../Service/ToastService/toast.service';
 import { PostService } from '../../Service/Post/post.service';
 import { Avatar } from 'primeng/avatar';
-
 @Component({
   selector: 'app-editor',
   imports: [
@@ -38,7 +35,7 @@ import { Avatar } from 'primeng/avatar';
     FloatLabel,
     TabsModule,
     Select,
-    Avatar
+    Avatar,
   ],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
@@ -48,7 +45,7 @@ export class EditorComponent implements OnInit {
     private store: Store<StoreType>,
     private toast: ToastService,
     private service: PostService
-  ) {}
+  ) { }
   //post tags
   tags: string[] = [];
   //post title
@@ -132,48 +129,7 @@ export class EditorComponent implements OnInit {
       );
     }
     const post = { group: selectedGroup.id, title, tags, description };
-    this.service.createPost(post , this.files);
+    this.service.createPost(post, this.files);
   }
 }
 
-class dummy {
-  text = '';
-  log() {
-    if (!this.text) return;
-    const parser = new DOMParser();
-    const html = parser.parseFromString(this.text, 'text/html');
-    const imageTags = html.querySelectorAll('img');
-    if (imageTags) {
-      this.parseImages(imageTags);
-    }
-  }
-  choose(event: any, callback: any) {
-    callback();
-  }
-  uploadEvent(callback: any) {
-    callback();
-  }
-  parseImages(imageElements: NodeListOf<HTMLImageElement>) {
-    for (const imageElement of imageElements) {
-      const src = imageElement.getAttribute('src');
-      const { mimeType, base64Data } = this.getSources(src ?? '');
-      const unsigned8BitArray = this.getUnsignedBitArrays(base64Data);
-      const fileBlob = new Blob([unsigned8BitArray], { type: mimeType });
-      const file = new File([fileBlob], 'dummy.jpg', { type: mimeType });
-      imageElement.setAttribute('src', file.name);
-    }
-  }
-  private getSources(src: string) {
-    const mimeType = src?.match(/:(.*?);/)?.[1];
-    const base64Data = src?.split(',')[1];
-    return { mimeType, base64Data };
-  }
-  private getUnsignedBitArrays(base64Data: string) {
-    const byteCharacters = atob(base64Data ?? '');
-    const byteArray = Array.from(byteCharacters, (chars) =>
-      chars.charCodeAt(0)
-    );
-    const unsigned8BitArray = new Uint8Array(byteArray);
-    return unsigned8BitArray;
-  }
-}

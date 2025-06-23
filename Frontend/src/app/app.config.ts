@@ -25,7 +25,9 @@ import { loadingInterceptor } from './Service/Interceptors/Loading/loading.inter
 import { PostEffect } from './Store/Post/Post.effects';
 import { groupPostReducer, postReducer } from './Store/Post/Post.reducer';
 import { userReducer } from './Store/User/User.reducer';
-
+import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io'
+import environmentDevelopment from '../environments/environment.development';
+const config: SocketIoConfig = { url: environmentDevelopment.api, options: {} }
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
@@ -52,5 +54,6 @@ export const appConfig: ApplicationConfig = {
       groupPost: groupPostReducer
     }),
     provideEffects([ToggleEffects, GroupEffects, PostEffect]),
+    provideSocketIo(config)
   ],
 };

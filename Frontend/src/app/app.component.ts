@@ -13,20 +13,20 @@ import { LoadingComponent } from "./Components/loading/loading.component";
 })
 export class AppComponent implements OnInit {
   title = 'unicircle';
-  constructor(private store : Store) {}
+  constructor(private store: Store) { }
   ngOnInit(): void {
     // check preferred theme in prefers-color-scheme media query
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
     // check if user has set a theme in local storage
     const storedTheme = localStorage.getItem("theme");
-    if(storedTheme) {
+    if (storedTheme) {
       const isDark = storedTheme === 'dark';
       this.store.dispatch(toggle({ darkMode: isDark }));
       const html = document.querySelector('html');
       html?.classList.toggle('dark', isDark);
     }
     else {
-      this.store.dispatch(toggle({darkMode : prefersDarkScheme}));
+      this.store.dispatch(toggle({ darkMode: prefersDarkScheme }));
       const html = document.querySelector('html');
       html?.classList.toggle('dark', prefersDarkScheme);
     }

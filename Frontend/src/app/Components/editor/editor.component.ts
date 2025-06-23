@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule, } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,7 @@ import { strIsEmpty } from '../../Utils/Util';
 import { ToastService } from '../../Service/ToastService/toast.service';
 import { PostService } from '../../Service/Post/post.service';
 import { Avatar } from 'primeng/avatar';
+import QuillConfig from '../../Utils/QuillConfig'
 @Component({
   selector: 'app-editor',
   imports: [
@@ -41,6 +42,7 @@ import { Avatar } from 'primeng/avatar';
   styleUrl: './editor.component.css',
 })
 export class EditorComponent implements OnInit {
+  @ViewChild("editor") editor: any;
   constructor(
     private store: Store<StoreType>,
     private toast: ToastService,
@@ -62,6 +64,9 @@ export class EditorComponent implements OnInit {
   selectedGroup = signal<UserGroup>({} as UserGroup);
   ngOnInit(): void {
     this.groups = this.store.select('group');
+  }
+  ngAfterViewInit() {
+    console.log(this.editor);
   }
   /**
    * @param index number

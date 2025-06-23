@@ -7,5 +7,6 @@ const envs = {
   cloudinaryApiSecretKey: process.env.CLOUDINARY_API_SECRET_KEY,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  env: process.env.DEV
 };
 export default envs;

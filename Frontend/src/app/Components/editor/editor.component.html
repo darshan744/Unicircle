@@ -62,7 +62,8 @@
       </p-fileupload>
     </div>
     <div>
-      <p-editor [(ngModel)]="postDescription" />
+      <p-editor #editor>
+              </p-editor>
     </div>
     <div class="mt-3 flex justify-end">
       <p-button (onClick)="submit()" icon="pi pi-send" size="small" label="Post" />

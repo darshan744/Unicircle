@@ -10,11 +10,12 @@ import { initPost } from '../../Store/Post/Post.actions';
 
 import { ToolbarComponent } from '../../Components/toolbar/toolbar.component';
 import { SidebarComponent } from '../../Components/sidebar/sidebar.component';
+import { ChatComponent } from '../../Components/chat/chat.component';
 import { UserGroup } from '../../Types/User';
 
 @Component({
   selector: 'app-main',
-  imports: [RouterOutlet, ToolbarComponent, SidebarComponent , CommonModule],
+  imports: [RouterOutlet, ToolbarComponent, SidebarComponent, CommonModule, ChatComponent],
   templateUrl: './main.component.html',
 })
 export class MainComponent {

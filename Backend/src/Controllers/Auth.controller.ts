@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Login, SignUp } from "../Types/Auth";
 import { loginSchema, signUpSchema, } from "../Validators/Auth.validator";
 import {
@@ -19,9 +19,7 @@ import { cookieOptions } from '../Util/HttpCookieOptions'
  * @description logs in the user and sets the token as cookie
  */
 const login = async (req: Request, res: Response, next: NextFunction) => {
-    const user: Login = req.body.user;
-    const isUserValid = loginSchema.safeParse(user);
-    if (isUserValid.error) {
+    const user: Login = req.body.user; const isUserValid = loginSchema.safeParse(user); if (isUserValid.error) {
         return next(new Exception(HttpStatusCode.BAD_REQUEST, "Invalid Body"));
     }
 
@@ -103,23 +101,24 @@ const userNameAvailable = async (
 
 /**
  * @method GET
- * @router /api/auth/refresh-token
+ * @router "/api/auth/refresh-token"
  * @description Used for refreshing the token
  */
 const refreshToken = (req: Request, res: Response, next: NextFunction) => {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
-        next(new Exception(HttpStatusCode.UNAUTHORIZED, "Ref token not found"))
-    }
-    try {
-        const refreshTokenDecoded = jwt.verify(refreshToken, envs.refreshKey);
-        const newToken = jwt.sign(refreshTokenDecoded, envs.secretKey)
-        // fifteen minutes
-        res.status(200).cookie("token", newToken, cookieOptions(60 * 15)).json();
-    } catch (error: any) {
-        next(new Exception(HttpStatusCode.UNAUTHORIZED, error.message));
-        return;
-    }
+        next(new Exception(HttpStatusCode.UNAUTHORIZED, "Ref token not found"));
+        try {
+            const refreshTokenDecoded = jwt.verify(refreshToken, envs.refreshKey);
+            const newToken = jwt.sign(refreshTokenDecoded, envs.secretKey)
+            // fifteen minutes
+            res.status(200).cookie("token", newToken, cookieOptions(60 * 15)).json();
+        } catch (error: any) {
+            next(new Exception(HttpStatusCode.UNAUTHORIZED, error.message));
+            return;
+        }
 
+    }
 }
+
 export { login, signup, refreshToken, userNameAvailable };

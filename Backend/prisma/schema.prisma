@@ -15,20 +15,21 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  userName     String    @unique
+  id           String      @id @default(uuid())
+  userName     String      @unique
   name         String
   email        String
   password     String
-  posts        Post[]    @relation("UserPost")
-  likes        Post[]    @relation("LikedPosts")
-  savedPost    Post[]    @relation("Saved")
+  posts        Post[]      @relation("UserPost")
+  likes        Post[]      @relation("LikedPosts")
+  savedPost    Post[]      @relation("Saved")
   profileImage String?
   //member of multiple groups
-  groups       Groups[]  @relation("GroupMembers")
+  groups       Groups[]    @relation("GroupMembers")
   Comments     Comment[]
   // admin of multiple groups
-  adminGroups  Groups[]  @relation("GroupAdmins")
+  adminGroups  Groups[]    @relation("GroupAdmins")
+  ChatUsers    ChatUsers[]
 }
 
 // post model
@@ -52,7 +53,7 @@ model Post {
 // tags like developement or web dev
 model Tags {
   id   String @id @default(uuid())
-  name String @unique 
+  name String @unique
   Post Post[]
 }
 
@@ -82,4 +83,39 @@ model Comment {
   // If its a comment null if not set which comment is this replied to
   parent   Comment   @relation("Comment Replies", fields: [parendId], references: [id])
   parendId String
+}
+
+model Chat {
+  id        String     @id @default(uuid())
+  ChatUsers ChatUser[]
+  messages  Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([id])
+}
+
+model ChatUser {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String
+
+  joinedAt DateTime @default(now())
+
+  @@unique([id])
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String
+
+  sender   User    @relation(fields: [senderId], references: [id])
+  senderId String
+  chat     Chat    @relation(fields: [chatId], references: [id])
+  chatId   String
+  seen     Boolean @default(false)
 }

@@ -12,6 +12,7 @@ import PostRoutes from './Routes/Post.routes'
 import AuthMiddleware from "./Middlewares/Auth";
 import helment from 'helmet'
 import { rateLimiter } from './Options/Ratelimit'
+import { createServer } from "node:http";
 const app = express();
 app.use(express.json());
 
@@ -39,4 +40,5 @@ app.use("/api/posts", PostRoutes)
 //MUST BE LAST
 app.use(errorHandler)
 
-export default app;
+const server = createServer(app);
+export default server;

@@ -1,19 +1,26 @@
-import app from './app'
 import envs from "./Environments";
 import logger from './Util/Logger'
 
 import { Server } from 'socket.io'
-import server from './app'
+import app from './app'
+import { createServer } from "node:http";
 
-const io = new Server(server);
+const server = createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:4200",
+    credentials: true,
+  }
+});
 
 io.on('connection', (socket) => {
-  socket.on('chat:send', () => {
-    console.log("Socket : " + socket)
+  console.log("Connection recieved")
+  socket.on("chat:send", () => {
+    console.log(socket.id)
   })
 })
 
-app.listen(envs.port, () =>
+server.listen(envs.port, () =>
   logger.info(
     `Sever listening in http://localhost:${envs.port}`
   ))

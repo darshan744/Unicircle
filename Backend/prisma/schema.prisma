@@ -29,7 +29,7 @@ model User {
   Comments     Comment[]
   // admin of multiple groups
   adminGroups  Groups[]    @relation("GroupAdmins")
-  ChatUsers    ChatUsers[]
+  ChatUsers    ChatUser[]
 }
 
 // post model
@@ -106,7 +106,7 @@ model ChatUser {
 
   joinedAt DateTime @default(now())
 
-  @@unique([id])
+  @@unique([id , userId , chatId])
 }
 
 model Message {
@@ -118,4 +118,5 @@ model Message {
   chat     Chat    @relation(fields: [chatId], references: [id])
   chatId   String
   seen     Boolean @default(false)
+  createdAt DateTime @default(now())
 }

@@ -33,7 +33,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         return next(new Exception(HttpStatusCode.CONFLICT, "Invaild Credentials"));
     }
     const token = jwt.sign({ id: userdata.id }, envs.secretKey, { expiresIn: "15s" });
-    const refreshToken = jwt.sign({ id: userdata.id }, envs.refreshKey, { expiresIn: "2m" });
+    const refreshToken = jwt.sign({ id: userdata.id }, envs.refreshKey, { expiresIn: "2d" });
     /**
      * @note 
      * In frontend when using set cookie header

@@ -22,7 +22,7 @@ app.use(
         credentials: true,
     })
 );
-app.use(helment());
+// app.use(helment());
 app.use(cookieParser());
 app.use(Logger);
 app.use(AuthMiddleware)
@@ -40,5 +40,4 @@ app.use("/api/posts", PostRoutes)
 //MUST BE LAST
 app.use(errorHandler)
 
-const server = createServer(app);
-export default server;
+export default app;

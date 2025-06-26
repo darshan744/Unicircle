@@ -3,12 +3,13 @@
   <div class="col-span-1">
     <app-sidebar [isNavbarOpened]="isNavBarOpenedSignal()" [userGroups]="groups$" />
   </div>
-  <div class="grid grid-cols-4">
+  <div>
+<div class="grid grid-cols-4">
     <div class="ml-15 col-span-3">
       <router-outlet />
     </div>
     <div class="col-span-1 ml-10 mt-4 border-2 border-l-red-300">
       <app-chat></app-chat>
     </div>
-  </div>
+  </div>  </div>
 </div>

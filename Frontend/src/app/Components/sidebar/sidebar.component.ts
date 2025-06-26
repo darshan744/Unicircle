@@ -5,9 +5,10 @@ import { Avatar } from 'primeng/avatar';
 import { Drawer } from 'primeng/drawer';
 import { UserGroup } from '../../Types/User';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Button } from 'primeng/button';
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, Avatar, Drawer, RouterLinkActive, RouterLink],
+  imports: [CommonModule, Avatar, Drawer, RouterLinkActive, RouterLink, Button],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })

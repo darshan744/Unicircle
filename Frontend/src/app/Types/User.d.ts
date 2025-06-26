@@ -58,3 +58,8 @@ export interface GroupPostsResponse extends BasePost {
     profileImage: string | null
   };
 }
+
+export interface ChatMessage {
+  id: string
+  content: string
+}

@@ -1,10 +1,10 @@
+import { Component, model, OnInit, output } from '@angular/core';
 import {
-  Component,
-  model,
-  OnInit,
-  output,
-} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -20,6 +20,7 @@ import { Store } from '@ngrx/store';
 import StoreType from '../../Store/Store';
 import { Observable, window } from 'rxjs';
 import { toggle } from '../../Store/Theme/Theme.actions';
+import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-toolbar',
   imports: [
@@ -34,27 +35,26 @@ import { toggle } from '../../Store/Theme/Theme.actions';
     MenuModule,
     RouterLink,
     FormsModule,
-
   ],
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnInit {
-
   navBarOutputSignal = output<boolean>();
-  isNavBarOpened : boolean = false;
+  isNavBarOpened: boolean = false;
+  menuItem: MenuItem[] = [];
   constructor(
     private userService: UserService,
     private router: Router,
     private store: Store<StoreType>,
-    private activatedRoute : ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {
     this.theme$ = this.store.select('theme');
   }
   theme$: Observable<boolean>;
   themeSignal = model(false);
 
-  get userId () :string {
-   return this.userService.userID
+  get userId(): string {
+    return this.userService.userID;
   }
 
   ngOnInit(): void {
@@ -63,15 +63,38 @@ export class ToolbarComponent implements OnInit {
     } else {
       this.themeSignal.set(false);
     }
-    this.openNavBar()
+    this.openNavBar();
+    this.menuItem = [
+      {
+        label: 'Profile',
+        icon: 'pi pi-user',
+        command: () => this.navigateProfile(),
+      },
+      {
+        label: 'Settings',
+        icon: 'pi pi-cog',
+        routerLink: ['settings'],
+      },
+      {
+        label: 'Theme',
+        icon: 'pi pi-moon',
+        items: [
+          {
+            label: 'Toggle Theme',
+            icon: 'pi pi-moon',
+            command: () => this.toggleTheme(!this.theme$),
+          },
+        ],
+      },
+    ];
   }
   toggleTheme(event: boolean) {
     const html = document.querySelector('html');
     this.store.dispatch(toggle({ darkMode: event }));
   }
 
-  openNavBar () : void {
-    this.isNavBarOpened = !this.isNavBarOpened
+  openNavBar(): void {
+    this.isNavBarOpened = !this.isNavBarOpened;
     this.navBarOutputSignal.emit(this.isNavBarOpened);
   }
   logout() {
@@ -83,9 +106,11 @@ export class ToolbarComponent implements OnInit {
   }
 
   navigateCreate() {
-    this.router.navigate([ 'create'] , {relativeTo : this.activatedRoute });
+    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
   }
   navigateProfile() {
-    this.router.navigate(['profile' , this.userService.userID], { relativeTo : this.activatedRoute })
+    this.router.navigate(['profile', this.userService.userID], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }

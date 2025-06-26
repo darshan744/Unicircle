@@ -1,6 +1,7 @@
 import {
   ApplicationConfig,
   provideZoneChangeDetection,
+  importProvidersFrom
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -25,9 +26,9 @@ import { loadingInterceptor } from './Service/Interceptors/Loading/loading.inter
 import { PostEffect } from './Store/Post/Post.effects';
 import { groupPostReducer, postReducer } from './Store/Post/Post.reducer';
 import { userReducer } from './Store/User/User.reducer';
-import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io'
+import { provideSocketIo, SocketIoConfig, SocketIoModule } from 'ngx-socket-io'
 import environmentDevelopment from '../environments/environment.development';
-const config: SocketIoConfig = { url: environmentDevelopment.api, options: {} }
+const config: SocketIoConfig = { url: environmentDevelopment.socket, options: { withCredentials: true } }
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
@@ -54,6 +55,6 @@ export const appConfig: ApplicationConfig = {
       groupPost: groupPostReducer
     }),
     provideEffects([ToggleEffects, GroupEffects, PostEffect]),
-    provideSocketIo(config)
+    importProvidersFrom(SocketIoModule.forRoot(config))
   ],
 };
